@@ -19,15 +19,19 @@
     --success: #2e7d32;
     --danger: #c62828;
     --shadow: 0 4px 24px rgba(26,26,46,0.12);
+    font-size: 1.3rem;
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { font-size: 13px; }
 
   body {
     font-family: 'Noto Sans TC', sans-serif;
     background: var(--paper);
     color: var(--ink);
     min-height: 100vh;
+    font-size: 1rem;
   }
 
   /* ── Layout ── */
@@ -55,7 +59,7 @@
     background: transparent;
     color: #a0b0c0;
     font-family: 'Noto Sans TC', sans-serif;
-    font-size: 11px;
+    font-size: 0.875rem;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.18s;
@@ -74,7 +78,7 @@
     padding: 6px 10px;
     color: #ddd;
     font-family: 'Noto Sans TC', sans-serif;
-    font-size: 12px;
+    font-size: 0.95rem;
     outline: none;
     margin-bottom: 6px;
     box-sizing: border-box;
@@ -84,7 +88,7 @@
   .sidebar-search:focus { border-color: var(--gold); }
 
   .history-count {
-    font-size: 10px;
+    font-size: 0.8rem;
     color: #607080;
     padding: 4px 16px 2px;
     letter-spacing: 0.5px;
@@ -111,7 +115,7 @@
 
   .sidebar-logo {
     font-family: 'Noto Serif TC', serif;
-    font-size: 22px;
+    font-size: 1.75rem;
     font-weight: 700;
     color: var(--gold);
     letter-spacing: 2px;
@@ -119,7 +123,7 @@
   }
 
   .sidebar-sub {
-    font-size: 11px;
+    font-size: 0.875rem;
     color: #a0a8b0;
     margin-top: 4px;
     letter-spacing: 1px;
@@ -127,7 +131,7 @@
 
   .sidebar-section {
     padding: 16px 20px 8px;
-    font-size: 10px;
+    font-size: 0.8rem;
     letter-spacing: 2px;
     color: var(--gold);
     text-transform: uppercase;
@@ -142,7 +146,7 @@
     border: none;
     border-radius: 6px;
     font-family: 'Noto Sans TC', sans-serif;
-    font-size: 13px;
+    font-size: 1.05rem;
     font-weight: 700;
     cursor: pointer;
     transition: all 0.2s;
@@ -169,13 +173,13 @@
   .history-item.active { background: rgba(201,168,76,0.2); border-left: 3px solid var(--gold); }
 
   .history-date {
-    font-size: 13px;
+    font-size: 1.05rem;
     font-weight: 600;
     color: #ddd;
   }
 
   .history-type {
-    font-size: 11px;
+    font-size: 0.875rem;
     color: #90a0b0;
     margin-top: 2px;
   }
@@ -185,7 +189,7 @@
     right: 12px;
     top: 50%;
     transform: translateY(-50%);
-    font-size: 10px;
+    font-size: 0.8rem;
     background: rgba(201,168,76,0.3);
     color: var(--gold);
     padding: 2px 6px;
@@ -195,7 +199,7 @@
   .no-history {
     padding: 20px;
     color: #607080;
-    font-size: 12px;
+    font-size: 0.95rem;
     text-align: center;
   }
 
@@ -214,14 +218,14 @@
 
   .doc-title {
     font-family: 'Noto Serif TC', serif;
-    font-size: 26px;
+    font-size: 2.1rem;
     font-weight: 700;
     letter-spacing: 6px;
     color: var(--ink);
   }
 
   .doc-subtitle {
-    font-size: 12px;
+    font-size: 0.95rem;
     color: var(--muted);
     letter-spacing: 3px;
     margin-top: 4px;
@@ -251,7 +255,7 @@
   .cell-label {
     background: var(--cream);
     padding: 10px 14px;
-    font-size: 13px;
+    font-size: 1.05rem;
     font-weight: 600;
     color: var(--steel);
     white-space: nowrap;
@@ -274,7 +278,7 @@
     border: none;
     background: transparent;
     font-family: 'Noto Sans TC', sans-serif;
-    font-size: 13px;
+    font-size: 1.05rem;
     color: var(--ink);
     outline: none;
     resize: none;
@@ -285,7 +289,7 @@
   /* ── Section Title ── */
   .section-title {
     font-family: 'Noto Serif TC', serif;
-    font-size: 15px;
+    font-size: 1.2rem;
     font-weight: 700;
     color: var(--steel);
     border-left: 4px solid var(--gold);
@@ -307,7 +311,7 @@
     outline: none;
     padding: 14px;
     font-family: 'Noto Sans TC', sans-serif;
-    font-size: 13px;
+    font-size: 1.05rem;
     color: var(--ink);
     background: transparent;
     resize: vertical;
@@ -320,7 +324,7 @@
     width: 100%;
     border-collapse: collapse;
     border: 1px solid var(--border);
-    font-size: 13px;
+    font-size: 1.05rem;
   }
 
   .followup-table th {
@@ -331,7 +335,7 @@
     color: var(--steel);
     border: 1px solid var(--border);
     letter-spacing: 1px;
-    font-size: 12px;
+    font-size: 0.95rem;
   }
 
   .followup-table td {
@@ -347,9 +351,25 @@
     outline: none;
     background: transparent;
     font-family: 'Noto Sans TC', sans-serif;
-    font-size: 13px;
+    font-size: 1.05rem;
     color: var(--ink);
     padding: 4px 4px;
+  }
+
+  .followup-table td textarea.item-input {
+    width: 100%;
+    border: none;
+    outline: none;
+    background: transparent;
+    font-family: 'Noto Sans TC', sans-serif;
+    font-size: 1.05rem;
+    color: var(--ink);
+    padding: 4px 4px;
+    resize: none;
+    overflow: hidden;
+    line-height: 1.6;
+    min-height: 28px;
+    display: block;
   }
 
   .followup-table td.num {
@@ -358,7 +378,7 @@
     font-weight: 700;
     color: var(--gold);
     width: 50px;
-    font-size: 12px;
+    font-size: 0.95rem;
   }
 
   .followup-table td.status-cell { width: 90px; text-align: center; }
@@ -367,7 +387,7 @@
     display: inline-block;
     padding: 3px 8px;
     border-radius: 10px;
-    font-size: 11px;
+    font-size: 0.875rem;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.2s;
@@ -384,7 +404,7 @@
     cursor: pointer;
     color: #ccc;
     transition: color 0.2s;
-    font-size: 16px;
+    font-size: 1.3rem;
   }
 
   .del-row:hover { color: var(--danger); }
@@ -396,7 +416,7 @@
     border: 1px dashed var(--border);
     border-radius: 4px;
     color: var(--muted);
-    font-size: 12px;
+    font-size: 0.95rem;
     cursor: pointer;
     transition: all 0.2s;
     font-family: 'Noto Sans TC', sans-serif;
@@ -426,7 +446,7 @@
     border: none;
     border-radius: 4px;
     font-family: 'Noto Sans TC', sans-serif;
-    font-size: 13px;
+    font-size: 1.05rem;
     font-weight: 700;
     cursor: pointer;
     transition: all 0.2s;
@@ -476,7 +496,7 @@
     color: #fff;
     padding: 14px 24px;
     border-radius: 6px;
-    font-size: 13px;
+    font-size: 1.05rem;
     box-shadow: var(--shadow);
     transform: translateY(80px);
     opacity: 0;
@@ -501,7 +521,7 @@
 
   .filter-panel-title {
     font-family: 'Noto Serif TC', serif;
-    font-size: 15px;
+    font-size: 1.2rem;
     font-weight: 700;
     color: var(--steel);
     margin-bottom: 16px;
@@ -522,7 +542,7 @@
     border: 1px solid var(--border);
     background: transparent;
     font-family: 'Noto Sans TC', sans-serif;
-    font-size: 12px;
+    font-size: 0.95rem;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.2s;
@@ -544,7 +564,7 @@
   .filter-result-table {
     width: 100%;
     border-collapse: collapse;
-    font-size: 13px;
+    font-size: 1.05rem;
   }
 
   .filter-result-table th {
@@ -554,7 +574,7 @@
     font-weight: 600;
     color: var(--steel);
     border-bottom: 1px solid var(--border);
-    font-size: 12px;
+    font-size: 0.95rem;
     letter-spacing: 1px;
   }
 
@@ -581,11 +601,11 @@
     padding: 24px;
     text-align: center;
     color: var(--muted);
-    font-size: 13px;
+    font-size: 1.05rem;
   }
 
   .filter-count {
-    font-size: 11px;
+    font-size: 0.875rem;
     color: var(--muted);
     margin-bottom: 10px;
   }
@@ -596,7 +616,7 @@
     border: 1px solid var(--border);
     border-radius: 4px;
     font-family: 'Noto Sans TC', sans-serif;
-    font-size: 12px;
+    font-size: 0.95rem;
     color: var(--muted);
     cursor: pointer;
     transition: all 0.2s;
@@ -611,7 +631,7 @@
   /* ── Carry-over ── */
   .carryover-tag {
     display: inline-block;
-    font-size: 10px;
+    font-size: 0.8rem;
     background: #e8f4fd;
     color: #1565c0;
     border: 1px solid #90caf9;
@@ -668,7 +688,7 @@
 
   .modal-title {
     font-family: 'Noto Serif TC', serif;
-    font-size: 16px;
+    font-size: 1.3rem;
     font-weight: 700;
     color: var(--steel);
     letter-spacing: 1px;
@@ -677,7 +697,7 @@
   .modal-close {
     background: none;
     border: none;
-    font-size: 20px;
+    font-size: 1.6rem;
     cursor: pointer;
     color: var(--muted);
     line-height: 1;
@@ -692,7 +712,7 @@
   }
 
   .modal-section-label {
-    font-size: 11px;
+    font-size: 0.875rem;
     font-weight: 700;
     color: var(--gold);
     letter-spacing: 2px;
@@ -718,9 +738,9 @@
 
   .modal-item input[type=checkbox] { accent-color: var(--gold); width: 15px; height: 15px; flex-shrink: 0; }
 
-  .modal-item-text { flex: 1; font-size: 13px; }
-  .modal-item-meta { font-size: 11px; color: var(--muted); }
-  .modal-item-source { font-size: 11px; color: #1565c0; margin-top: 2px; }
+  .modal-item-text { flex: 1; font-size: 1.05rem; }
+  .modal-item-meta { font-size: 0.875rem; color: var(--muted); }
+  .modal-item-source { font-size: 0.875rem; color: #1565c0; margin-top: 2px; }
 
   .modal-footer {
     padding: 14px 24px;
@@ -735,7 +755,7 @@
     text-align: center;
     color: var(--muted);
     padding: 32px;
-    font-size: 13px;
+    font-size: 1.05rem;
   }
 
   /* ── Print ── */
@@ -852,7 +872,7 @@
       </div>
       <div class="filter-panel" id="filterPanel">
         <div class="filter-controls">
-          <span style="font-size:12px; color:var(--muted); margin-right:4px;">篩選狀態：</span>
+          <span style="font-size: 0.95rem; color:var(--muted); margin-right:4px;">篩選狀態：</span>
           <button class="filter-btn active-all" data-status="all" onclick="applyFilter('all')">全部</button>
           <button class="filter-btn" data-status="pending" onclick="applyFilter('pending')">進行中</button>
           <button class="filter-btn" data-status="done" onclick="applyFilter('done')">已完成</button>
@@ -873,12 +893,12 @@
       <table class="followup-table" id="followupTable">
         <thead>
           <tr>
-            <th style="width:50px">編號</th>
+            <th style="width:55px">編號</th>
             <th>追蹤事項</th>
-            <th style="width:110px">負責人</th>
-            <th style="width:120px">完成日</th>
+            <th style="width:120px">負責人</th>
+            <th style="width:130px">完成日</th>
             <th style="width:90px">狀態</th>
-            <th style="width:80px">來源</th>
+            <th style="width:90px">來源</th>
             <th style="width:36px"></th>
           </tr>
         </thead>
@@ -1045,10 +1065,10 @@ function addRow(carryFrom) {
   tr.id = `row_${rowCount}`;
   const sourceHtml = carryFrom
     ? `<td style="text-align:center"><span class="carryover-tag" title="來自 ${carryFrom.date}" onclick="loadMeeting('${carryFrom.id}')">↩ ${carryFrom.date}</span></td>`
-    : `<td style="text-align:center; color:#ccc; font-size:11px">—</td>`;
+    : `<td style="text-align:center; color:#ccc; font-size:0.875rem">—</td>`;
   tr.innerHTML = `
     <td class="num">${num}</td>
-    <td><input type="text" placeholder="描述追蹤事項…"></td>
+    <td><textarea class="item-input" placeholder="描述追蹤事項…" oninput="autoResize(this)" rows="1"></textarea></td>
     <td><input type="text" placeholder="姓名"></td>
     <td><input type="date"></td>
     <td class="status-cell">
@@ -1076,6 +1096,16 @@ function toggleStatus(el) {
   }
 }
 
+// ── Auto-resize textarea ──
+function autoResize(el) {
+  el.style.height = 'auto';
+  el.style.height = el.scrollHeight + 'px';
+}
+
+function autoResizeAll() {
+  document.querySelectorAll('textarea.item-input').forEach(autoResize);
+}
+
 // ── Save ──
 function saveMeeting() {
   const date = document.getElementById('meetingDate').value;
@@ -1086,7 +1116,7 @@ function saveMeeting() {
   const followups = [];
   document.querySelectorAll('#followupBody tr').forEach((tr, i) => {
     const cells = tr.querySelectorAll('td');
-    const item = cells[1]?.querySelector('input')?.value || '';
+    const item = cells[1]?.querySelector('textarea')?.value || '';
     if (!item.trim()) return;
     const statusEl = cells[4]?.querySelector('.status-badge');
     let status = 'pending';
@@ -1175,10 +1205,10 @@ function loadMeeting(id) {
     else if (f.status === 'continued') { cls = 'status-continued'; label = '已延續'; }
     const sourceHtml = f.carryFrom
       ? `<td style="text-align:center"><span class="carryover-tag" title="來自 ${f.carryFrom.date}" onclick="loadMeeting('${f.carryFrom.id}')">↩ ${f.carryFrom.date}</span></td>`
-      : `<td style="text-align:center; color:#ccc; font-size:11px">—</td>`;
+      : `<td style="text-align:center; color:#ccc; font-size:0.875rem">—</td>`;
     tr.innerHTML = `
       <td class="num">${f.num}</td>
-      <td><input type="text" value="${f.item || ''}"></td>
+      <td><textarea class="item-input" oninput="autoResize(this)" rows="1">${f.item || ''}</textarea></td>
       <td><input type="text" value="${f.owner || ''}"></td>
       <td><input type="date" value="${f.deadline || ''}"></td>
       <td class="status-cell"><span class="status-badge ${cls}" onclick="toggleStatus(this)">${label}</span></td>
@@ -1190,6 +1220,7 @@ function loadMeeting(id) {
 
   enableEdit();
   renderHistory();
+  setTimeout(autoResizeAll, 0);
 }
 
 // ── Delete ──
@@ -1277,7 +1308,7 @@ function confirmCarryover() {
     tr.id = `row_${rowCount}`;
     tr.innerHTML = `
       <td class="num">${num}</td>
-      <td><input type="text" value="${cb.dataset.item || ''}"></td>
+      <td><textarea class="item-input" oninput="autoResize(this)" rows="1">${cb.dataset.item || ''}</textarea></td>
       <td><input type="text" value="${cb.dataset.owner || ''}"></td>
       <td><input type="date" value="${cb.dataset.deadline || ''}"></td>
       <td class="status-cell"><span class="status-badge status-pending" onclick="toggleStatus(this)">進行中</span></td>
@@ -1373,10 +1404,10 @@ function applyFilter(status) {
           const [cls, lbl] = statusMap[r.status] || ['status-pending', '進行中'];
           return `<tr>
             <td><span class="filter-date-link" onclick="loadMeeting('${r.meetingId}')">${r.meetingDate}</span></td>
-            <td style="font-size:12px; color:var(--muted)">${r.meetingType}</td>
+            <td style="font-size: 0.95rem; color:var(--muted)">${r.meetingType}</td>
             <td>${r.item || '—'}</td>
             <td>${r.owner || '—'}</td>
-            <td style="font-size:12px">${r.deadline || '—'}</td>
+            <td style="font-size:0.95rem">${r.deadline || '—'}</td>
             <td><span class="status-badge ${cls}" style="cursor:default">${lbl}</span></td>
           </tr>`;
         }).join('')}
