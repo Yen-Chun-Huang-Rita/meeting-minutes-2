@@ -608,6 +608,136 @@
   .toggle-filter-btn:hover { border-color: var(--gold); color: var(--gold); }
   .toggle-filter-btn.on { background: var(--steel); color: #fff; border-color: var(--steel); }
 
+  /* ── Carry-over ── */
+  .carryover-tag {
+    display: inline-block;
+    font-size: 10px;
+    background: #e8f4fd;
+    color: #1565c0;
+    border: 1px solid #90caf9;
+    border-radius: 3px;
+    padding: 1px 5px;
+    margin-left: 6px;
+    white-space: nowrap;
+    vertical-align: middle;
+    cursor: pointer;
+    font-weight: 600;
+  }
+
+  .carryover-tag:hover { background: #bbdefb; }
+
+  .status-continued {
+    background: #ede7f6;
+    color: #4527a0;
+    border: 1px solid #b39ddb;
+  }
+
+  /* carry-over modal */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.45);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .modal-overlay.open { display: flex; }
+
+  .modal-box {
+    background: var(--paper);
+    border-radius: 10px;
+    width: 600px;
+    max-width: 95vw;
+    max-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 16px 48px rgba(0,0,0,0.25);
+    overflow: hidden;
+  }
+
+  .modal-header {
+    padding: 20px 24px 16px;
+    border-bottom: 1px solid var(--border);
+    background: var(--cream);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .modal-title {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--steel);
+    letter-spacing: 1px;
+  }
+
+  .modal-close {
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    color: var(--muted);
+    line-height: 1;
+  }
+
+  .modal-close:hover { color: var(--danger); }
+
+  .modal-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 16px 24px;
+  }
+
+  .modal-section-label {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--gold);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin: 12px 0 6px;
+  }
+
+  .modal-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 12px;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    margin-bottom: 6px;
+    background: #fff;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+
+  .modal-item:hover { background: rgba(201,168,76,0.08); }
+  .modal-item.selected { background: rgba(201,168,76,0.15); border-color: var(--gold); }
+
+  .modal-item input[type=checkbox] { accent-color: var(--gold); width: 15px; height: 15px; flex-shrink: 0; }
+
+  .modal-item-text { flex: 1; font-size: 13px; }
+  .modal-item-meta { font-size: 11px; color: var(--muted); }
+  .modal-item-source { font-size: 11px; color: #1565c0; margin-top: 2px; }
+
+  .modal-footer {
+    padding: 14px 24px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+    background: var(--cream);
+  }
+
+  .modal-empty {
+    text-align: center;
+    color: var(--muted);
+    padding: 32px;
+    font-size: 13px;
+  }
+
   /* ── Print ── */
   @media print {
     .sidebar, .btn-bar, .view-actions, .add-row-btn, .del-row { display: none !important; }
@@ -748,6 +878,7 @@
             <th style="width:110px">負責人</th>
             <th style="width:120px">完成日</th>
             <th style="width:90px">狀態</th>
+            <th style="width:80px">來源</th>
             <th style="width:36px"></th>
           </tr>
         </thead>
@@ -758,11 +889,27 @@
       <!-- Buttons -->
       <div class="btn-bar">
         <button class="btn btn-primary" onclick="saveMeeting()">💾 儲存記錄</button>
+        <button class="btn btn-secondary" onclick="openCarryoverModal()">↩ 延續追蹤</button>
         <button class="btn btn-secondary" onclick="printPage()">🖨 列印</button>
         <button class="btn btn-danger" id="deleteBtn" style="display:none" onclick="deleteCurrentMeeting()">🗑 刪除此記錄</button>
       </div>
     </div>
   </main>
+</div>
+
+<!-- Carry-over Modal -->
+<div class="modal-overlay" id="carryoverModal">
+  <div class="modal-box">
+    <div class="modal-header">
+      <div class="modal-title">↩ 延續追蹤事項</div>
+      <button class="modal-close" onclick="closeCarryoverModal()">×</button>
+    </div>
+    <div class="modal-body" id="carryoverModalBody"></div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeCarryoverModal()">取消</button>
+      <button class="btn btn-primary" onclick="confirmCarryover()">帶入選取事項</button>
+    </div>
+  </div>
 </div>
 
 <div class="toast" id="toast"></div>
@@ -891,11 +1038,14 @@ function newMeeting() {
 }
 
 // ── Add Row ──
-function addRow() {
+function addRow(carryFrom) {
   rowCount++;
   const num = String(rowCount).padStart(3, '0');
   const tr = document.createElement('tr');
   tr.id = `row_${rowCount}`;
+  const sourceHtml = carryFrom
+    ? `<td style="text-align:center"><span class="carryover-tag" title="來自 ${carryFrom.date}" onclick="loadMeeting('${carryFrom.id}')">↩ ${carryFrom.date}</span></td>`
+    : `<td style="text-align:center; color:#ccc; font-size:11px">—</td>`;
   tr.innerHTML = `
     <td class="num">${num}</td>
     <td><input type="text" placeholder="描述追蹤事項…"></td>
@@ -904,6 +1054,7 @@ function addRow() {
     <td class="status-cell">
       <span class="status-badge status-pending" onclick="toggleStatus(this)">進行中</span>
     </td>
+    ${sourceHtml}
     <td class="del-row" onclick="this.closest('tr').remove()">✕</td>
   `;
   document.getElementById('followupBody').appendChild(tr);
@@ -916,6 +1067,9 @@ function toggleStatus(el) {
   } else if (el.classList.contains('status-done')) {
     el.className = 'status-badge status-overdue';
     el.textContent = '逾期';
+  } else if (el.classList.contains('status-overdue')) {
+    el.className = 'status-badge status-continued';
+    el.textContent = '已延續';
   } else {
     el.className = 'status-badge status-pending';
     el.textContent = '進行中';
@@ -938,12 +1092,25 @@ function saveMeeting() {
     let status = 'pending';
     if (statusEl?.classList.contains('status-done')) status = 'done';
     else if (statusEl?.classList.contains('status-overdue')) status = 'overdue';
+    else if (statusEl?.classList.contains('status-continued')) status = 'continued';
+    // read carryFrom from tag if present
+    const tag = cells[5]?.querySelector('.carryover-tag');
+    let carryFrom = null;
+    if (tag) {
+      const onclickStr = tag.getAttribute('onclick') || '';
+      const idMatch = onclickStr.match(/loadMeeting\('([^']+)'\)/);
+      if (idMatch) {
+        const srcMeeting = meetings.find(m => m.id === idMatch[1]);
+        if (srcMeeting) carryFrom = { id: srcMeeting.id, date: srcMeeting.date };
+      }
+    }
     followups.push({
       num: String(i + 1).padStart(3, '0'),
       item,
       owner: cells[2]?.querySelector('input')?.value || '',
       deadline: cells[3]?.querySelector('input')?.value || '',
-      status
+      status,
+      carryFrom
     });
   });
 
@@ -1005,12 +1172,17 @@ function loadMeeting(id) {
     let cls = 'status-pending', label = '進行中';
     if (f.status === 'done') { cls = 'status-done'; label = '已完成'; }
     else if (f.status === 'overdue') { cls = 'status-overdue'; label = '逾期'; }
+    else if (f.status === 'continued') { cls = 'status-continued'; label = '已延續'; }
+    const sourceHtml = f.carryFrom
+      ? `<td style="text-align:center"><span class="carryover-tag" title="來自 ${f.carryFrom.date}" onclick="loadMeeting('${f.carryFrom.id}')">↩ ${f.carryFrom.date}</span></td>`
+      : `<td style="text-align:center; color:#ccc; font-size:11px">—</td>`;
     tr.innerHTML = `
       <td class="num">${f.num}</td>
       <td><input type="text" value="${f.item || ''}"></td>
       <td><input type="text" value="${f.owner || ''}"></td>
       <td><input type="date" value="${f.deadline || ''}"></td>
       <td class="status-cell"><span class="status-badge ${cls}" onclick="toggleStatus(this)">${label}</span></td>
+      ${sourceHtml}
       <td class="del-row" onclick="this.closest('tr').remove()">✕</td>
     `;
     document.getElementById('followupBody').appendChild(tr);
@@ -1028,6 +1200,103 @@ function deleteCurrentMeeting() {
   localStorage.setItem('m31_meetings', JSON.stringify(meetings));
   newMeeting();
   showToast('記錄已刪除');
+}
+
+// ── Carry-over ──
+function openCarryoverModal() {
+  // Collect all pending/overdue items from OTHER meetings
+  const body = document.getElementById('carryoverModalBody');
+  const otherMeetings = [...meetings]
+    .filter(m => m.id !== currentId)
+    .sort((a, b) => b.date.localeCompare(a.date));
+
+  // Also collect from current meeting's existing carryFrom sources to avoid re-importing
+  const alreadyCarried = new Set();
+  document.querySelectorAll('#followupBody .carryover-tag').forEach(tag => {
+    const m = tag.getAttribute('onclick').match(/loadMeeting\('([^']+)'\)/);
+    if (m) alreadyCarried.add(m[1] + '_' + tag.closest('tr').querySelector('input').value);
+  });
+
+  let html = '';
+  let totalItems = 0;
+
+  otherMeetings.forEach(m => {
+    const pending = (m.followups || []).filter(f => f.status !== 'done' && f.status !== 'continued');
+    if (!pending.length) return;
+    html += `<div class="modal-section-label">${m.date}・${m.type || '—'}</div>`;
+    pending.forEach(f => {
+      const key = m.id + '_' + f.item;
+      const alreadyIn = alreadyCarried.has(key);
+      html += `
+        <label class="modal-item ${alreadyIn ? 'selected' : ''}" onclick="toggleModalItem(this)">
+          <input type="checkbox" ${alreadyIn ? 'checked' : ''} data-src-id="${m.id}" data-src-date="${m.date}" data-item="${(f.item||'').replace(/"/g,'&quot;')}" data-owner="${(f.owner||'').replace(/"/g,'&quot;')}" data-deadline="${f.deadline||''}">
+          <div class="modal-item-text">
+            <div>${f.item || '—'}</div>
+            <div class="modal-item-meta">負責人：${f.owner || '—'}　完成日：${f.deadline || '—'}</div>
+          </div>
+        </label>`;
+      totalItems++;
+    });
+  });
+
+  if (!totalItems) {
+    html = '<div class="modal-empty">其他會議中沒有未完成的追蹤事項</div>';
+  }
+
+  body.innerHTML = html;
+  document.getElementById('carryoverModal').classList.add('open');
+}
+
+function toggleModalItem(label) {
+  const cb = label.querySelector('input[type=checkbox]');
+  cb.checked = !cb.checked;
+  label.classList.toggle('selected', cb.checked);
+}
+
+function closeCarryoverModal() {
+  document.getElementById('carryoverModal').classList.remove('open');
+}
+
+function confirmCarryover() {
+  const checked = document.querySelectorAll('#carryoverModalBody input[type=checkbox]:checked');
+  if (!checked.length) { closeCarryoverModal(); return; }
+
+  // Remove the default empty row if only one blank row exists
+  const tbody = document.getElementById('followupBody');
+  const rows = tbody.querySelectorAll('tr');
+  if (rows.length === 1) {
+    const firstInput = rows[0].querySelector('input[type=text]');
+    if (!firstInput?.value.trim()) tbody.innerHTML = '';
+  }
+
+  checked.forEach(cb => {
+    const carryFrom = { id: cb.dataset.srcId, date: cb.dataset.srcDate };
+    rowCount++;
+    const num = String(rowCount).padStart(3, '0');
+    const tr = document.createElement('tr');
+    tr.id = `row_${rowCount}`;
+    tr.innerHTML = `
+      <td class="num">${num}</td>
+      <td><input type="text" value="${cb.dataset.item || ''}"></td>
+      <td><input type="text" value="${cb.dataset.owner || ''}"></td>
+      <td><input type="date" value="${cb.dataset.deadline || ''}"></td>
+      <td class="status-cell"><span class="status-badge status-pending" onclick="toggleStatus(this)">進行中</span></td>
+      <td style="text-align:center"><span class="carryover-tag" title="來自 ${carryFrom.date}" onclick="loadMeeting('${carryFrom.id}')">↩ ${carryFrom.date}</span></td>
+      <td class="del-row" onclick="this.closest('tr').remove()">✕</td>
+    `;
+    tbody.appendChild(tr);
+
+    // Mark source item as continued
+    const srcMeeting = meetings.find(m => m.id === cb.dataset.srcId);
+    if (srcMeeting) {
+      const srcItem = (srcMeeting.followups || []).find(f => f.item === cb.dataset.item);
+      if (srcItem) srcItem.status = 'continued';
+    }
+  });
+
+  localStorage.setItem('m31_meetings', JSON.stringify(meetings));
+  closeCarryoverModal();
+  showToast(`✓ 已帶入 ${checked.length} 筆追蹤事項`);
 }
 
 // ── Filter ──
