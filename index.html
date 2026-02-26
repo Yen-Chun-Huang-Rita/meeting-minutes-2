@@ -1,0 +1,1128 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>M31財務部會議記錄系統</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700&family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1a2e;
+    --paper: #f8f5ee;
+    --cream: #f0ead6;
+    --gold: #c9a84c;
+    --gold-light: #e8d5a3;
+    --rust: #8b4513;
+    --steel: #2c3e50;
+    --muted: #7a7267;
+    --border: #d4c9a8;
+    --success: #2e7d32;
+    --danger: #c62828;
+    --shadow: 0 4px 24px rgba(26,26,46,0.12);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Noto Sans TC', sans-serif;
+    background: var(--paper);
+    color: var(--ink);
+    min-height: 100vh;
+  }
+
+  /* ── Layout ── */
+  .app { display: flex; min-height: 100vh; }
+
+  /* ── Sidebar Filter ── */
+  .sidebar-filter {
+    padding: 8px 12px 4px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+
+  .sidebar-filter-row {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 6px;
+    flex-wrap: wrap;
+  }
+
+  .sf-btn {
+    flex: 1;
+    min-width: 0;
+    padding: 5px 4px;
+    border-radius: 4px;
+    border: 1px solid rgba(255,255,255,0.15);
+    background: transparent;
+    color: #a0b0c0;
+    font-family: 'Noto Sans TC', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.18s;
+    text-align: center;
+    white-space: nowrap;
+  }
+
+  .sf-btn:hover { border-color: var(--gold); color: var(--gold); }
+  .sf-btn.sf-active { background: var(--gold); color: var(--ink); border-color: var(--gold); }
+
+  .sidebar-search {
+    width: 100%;
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 4px;
+    padding: 6px 10px;
+    color: #ddd;
+    font-family: 'Noto Sans TC', sans-serif;
+    font-size: 12px;
+    outline: none;
+    margin-bottom: 6px;
+    box-sizing: border-box;
+  }
+
+  .sidebar-search::placeholder { color: #607080; }
+  .sidebar-search:focus { border-color: var(--gold); }
+
+  .history-count {
+    font-size: 10px;
+    color: #607080;
+    padding: 4px 16px 2px;
+    letter-spacing: 0.5px;
+  }
+
+  .sidebar {
+    width: 280px;
+    min-width: 280px;
+    background: var(--steel);
+    color: #e8e8e8;
+    display: flex;
+    flex-direction: column;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+  }
+
+  .sidebar-header {
+    padding: 28px 20px 20px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    background: linear-gradient(135deg, #1a2a3a, #2c3e50);
+  }
+
+  .sidebar-logo {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--gold);
+    letter-spacing: 2px;
+    line-height: 1.3;
+  }
+
+  .sidebar-sub {
+    font-size: 11px;
+    color: #a0a8b0;
+    margin-top: 4px;
+    letter-spacing: 1px;
+  }
+
+  .sidebar-section {
+    padding: 16px 20px 8px;
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: var(--gold);
+    text-transform: uppercase;
+    font-weight: 700;
+  }
+
+  .new-btn {
+    margin: 8px 16px 16px;
+    padding: 10px 16px;
+    background: var(--gold);
+    color: var(--ink);
+    border: none;
+    border-radius: 6px;
+    font-family: 'Noto Sans TC', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: calc(100% - 32px);
+    justify-content: center;
+  }
+
+  .new-btn:hover { background: #e8c56a; transform: translateY(-1px); }
+
+  .history-list { flex: 1; overflow-y: auto; }
+
+  .history-item {
+    padding: 12px 20px;
+    cursor: pointer;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    transition: background 0.15s;
+    position: relative;
+  }
+
+  .history-item:hover { background: rgba(201,168,76,0.15); }
+  .history-item.active { background: rgba(201,168,76,0.2); border-left: 3px solid var(--gold); }
+
+  .history-date {
+    font-size: 13px;
+    font-weight: 600;
+    color: #ddd;
+  }
+
+  .history-type {
+    font-size: 11px;
+    color: #90a0b0;
+    margin-top: 2px;
+  }
+
+  .history-badge {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 10px;
+    background: rgba(201,168,76,0.3);
+    color: var(--gold);
+    padding: 2px 6px;
+    border-radius: 10px;
+  }
+
+  .no-history {
+    padding: 20px;
+    color: #607080;
+    font-size: 12px;
+    text-align: center;
+  }
+
+  /* ── Main ── */
+  .main { flex: 1; padding: 40px 48px; max-width: 960px; }
+
+  /* ── Document Header ── */
+  .doc-header {
+    text-align: center;
+    border-top: 4px double var(--gold);
+    border-bottom: 4px double var(--gold);
+    padding: 20px 0;
+    margin-bottom: 32px;
+    position: relative;
+  }
+
+  .doc-title {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 26px;
+    font-weight: 700;
+    letter-spacing: 6px;
+    color: var(--ink);
+  }
+
+  .doc-subtitle {
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 3px;
+    margin-top: 4px;
+  }
+
+  /* ── Form ── */
+  .form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    border: 1px solid var(--border);
+    margin-bottom: 24px;
+  }
+
+  .form-grid.three { grid-template-columns: 1fr 1fr 1fr; }
+
+  .form-cell {
+    border-right: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: stretch;
+  }
+
+  .form-cell:last-child { border-right: none; }
+  .form-cell.full { grid-column: 1 / -1; }
+
+  .cell-label {
+    background: var(--cream);
+    padding: 10px 14px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--steel);
+    white-space: nowrap;
+    min-width: 80px;
+    border-right: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    letter-spacing: 1px;
+  }
+
+  .cell-input {
+    flex: 1;
+    padding: 10px 14px;
+  }
+
+  .cell-input input,
+  .cell-input select,
+  .cell-input textarea {
+    width: 100%;
+    border: none;
+    background: transparent;
+    font-family: 'Noto Sans TC', sans-serif;
+    font-size: 13px;
+    color: var(--ink);
+    outline: none;
+    resize: none;
+  }
+
+  .cell-input select { cursor: pointer; }
+
+  /* ── Section Title ── */
+  .section-title {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--steel);
+    border-left: 4px solid var(--gold);
+    padding-left: 10px;
+    margin: 28px 0 14px;
+    letter-spacing: 2px;
+  }
+
+  /* ── Discussion ── */
+  .discussion-box {
+    border: 1px solid var(--border);
+    background: #fff;
+    min-height: 120px;
+  }
+
+  .discussion-box textarea {
+    width: 100%;
+    border: none;
+    outline: none;
+    padding: 14px;
+    font-family: 'Noto Sans TC', sans-serif;
+    font-size: 13px;
+    color: var(--ink);
+    background: transparent;
+    resize: vertical;
+    min-height: 120px;
+    line-height: 1.8;
+  }
+
+  /* ── Follow-up Table ── */
+  .followup-table {
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid var(--border);
+    font-size: 13px;
+  }
+
+  .followup-table th {
+    background: var(--cream);
+    padding: 10px 12px;
+    text-align: center;
+    font-weight: 600;
+    color: var(--steel);
+    border: 1px solid var(--border);
+    letter-spacing: 1px;
+    font-size: 12px;
+  }
+
+  .followup-table td {
+    border: 1px solid var(--border);
+    padding: 6px 8px;
+    vertical-align: middle;
+  }
+
+  .followup-table td input,
+  .followup-table td select {
+    width: 100%;
+    border: none;
+    outline: none;
+    background: transparent;
+    font-family: 'Noto Sans TC', sans-serif;
+    font-size: 13px;
+    color: var(--ink);
+    padding: 4px 4px;
+  }
+
+  .followup-table td.num {
+    text-align: center;
+    background: var(--cream);
+    font-weight: 700;
+    color: var(--gold);
+    width: 50px;
+    font-size: 12px;
+  }
+
+  .followup-table td.status-cell { width: 90px; text-align: center; }
+
+  .status-badge {
+    display: inline-block;
+    padding: 3px 8px;
+    border-radius: 10px;
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+
+  .status-pending { background: #fff3cd; color: #856404; border: 1px solid #ffc107; }
+  .status-done { background: #d4edda; color: var(--success); border: 1px solid #28a745; }
+  .status-overdue { background: #f8d7da; color: var(--danger); border: 1px solid #dc3545; }
+
+  .del-row {
+    width: 32px;
+    text-align: center;
+    cursor: pointer;
+    color: #ccc;
+    transition: color 0.2s;
+    font-size: 16px;
+  }
+
+  .del-row:hover { color: var(--danger); }
+
+  .add-row-btn {
+    margin-top: 10px;
+    padding: 8px 16px;
+    background: transparent;
+    border: 1px dashed var(--border);
+    border-radius: 4px;
+    color: var(--muted);
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: 'Noto Sans TC', sans-serif;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .add-row-btn:hover {
+    border-color: var(--gold);
+    color: var(--gold);
+    background: rgba(201,168,76,0.05);
+  }
+
+  /* ── Buttons ── */
+  .btn-bar {
+    display: flex;
+    gap: 12px;
+    margin-top: 32px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+    flex-wrap: wrap;
+  }
+
+  .btn {
+    padding: 10px 24px;
+    border: none;
+    border-radius: 4px;
+    font-family: 'Noto Sans TC', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 1px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .btn-primary { background: var(--gold); color: var(--ink); }
+  .btn-primary:hover { background: #e8c56a; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(201,168,76,0.4); }
+
+  .btn-secondary { background: var(--steel); color: #fff; }
+  .btn-secondary:hover { background: #1a2a3a; }
+
+  .btn-danger { background: transparent; color: var(--danger); border: 1px solid var(--danger); }
+  .btn-danger:hover { background: var(--danger); color: #fff; }
+
+  /* ── View Mode ── */
+  .view-mode .cell-input input,
+  .view-mode .cell-input select,
+  .view-mode .cell-input textarea,
+  .view-mode .discussion-box textarea,
+  .view-mode .followup-table td input,
+  .view-mode .followup-table td select {
+    pointer-events: none;
+  }
+
+  .view-mode .add-row-btn { display: none; }
+  .view-mode .del-row { display: none; }
+  .view-mode .btn-bar { display: none; }
+
+  .view-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 32px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+  }
+
+  /* ── Toast ── */
+  .toast {
+    position: fixed;
+    bottom: 32px;
+    right: 32px;
+    background: var(--steel);
+    color: #fff;
+    padding: 14px 24px;
+    border-radius: 6px;
+    font-size: 13px;
+    box-shadow: var(--shadow);
+    transform: translateY(80px);
+    opacity: 0;
+    transition: all 0.3s;
+    z-index: 999;
+    border-left: 4px solid var(--gold);
+  }
+
+  .toast.show { transform: translateY(0); opacity: 1; }
+
+  /* ── Filter Panel ── */
+  .filter-panel {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 20px 24px;
+    margin-bottom: 28px;
+    display: none;
+  }
+
+  .filter-panel.open { display: block; }
+
+  .filter-panel-title {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--steel);
+    margin-bottom: 16px;
+    letter-spacing: 1px;
+  }
+
+  .filter-controls {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+  }
+
+  .filter-btn {
+    padding: 7px 18px;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    background: transparent;
+    font-family: 'Noto Sans TC', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    color: var(--muted);
+  }
+
+  .filter-btn:hover { border-color: var(--gold); color: var(--gold); }
+  .filter-btn.active-all { background: var(--steel); color: #fff; border-color: var(--steel); }
+  .filter-btn.active-pending { background: #fff3cd; color: #856404; border-color: #ffc107; }
+  .filter-btn.active-done { background: #d4edda; color: var(--success); border-color: #28a745; }
+  .filter-btn.active-overdue { background: #f8d7da; color: var(--danger); border-color: #dc3545; }
+
+  .filter-results {
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .filter-result-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+
+  .filter-result-table th {
+    background: var(--cream);
+    padding: 9px 12px;
+    text-align: left;
+    font-weight: 600;
+    color: var(--steel);
+    border-bottom: 1px solid var(--border);
+    font-size: 12px;
+    letter-spacing: 1px;
+  }
+
+  .filter-result-table td {
+    padding: 9px 12px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: middle;
+  }
+
+  .filter-result-table tr:last-child td { border-bottom: none; }
+  .filter-result-table tr:hover td { background: rgba(201,168,76,0.05); }
+
+  .filter-date-link {
+    color: var(--gold);
+    cursor: pointer;
+    font-weight: 600;
+    text-decoration: underline;
+    white-space: nowrap;
+  }
+
+  .filter-date-link:hover { color: var(--rust); }
+
+  .filter-empty {
+    padding: 24px;
+    text-align: center;
+    color: var(--muted);
+    font-size: 13px;
+  }
+
+  .filter-count {
+    font-size: 11px;
+    color: var(--muted);
+    margin-bottom: 10px;
+  }
+
+  .toggle-filter-btn {
+    padding: 7px 16px;
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    font-family: 'Noto Sans TC', sans-serif;
+    font-size: 12px;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .toggle-filter-btn:hover { border-color: var(--gold); color: var(--gold); }
+  .toggle-filter-btn.on { background: var(--steel); color: #fff; border-color: var(--steel); }
+
+  /* ── Print ── */
+  @media print {
+    .sidebar, .btn-bar, .view-actions, .add-row-btn, .del-row { display: none !important; }
+    .main { padding: 20px; max-width: 100%; }
+    body { background: #fff; }
+  }
+
+  /* ── Scrollbar ── */
+  .history-list::-webkit-scrollbar { width: 4px; }
+  .history-list::-webkit-scrollbar-thumb { background: rgba(201,168,76,0.3); border-radius: 2px; }
+</style>
+</head>
+<body>
+
+<div class="app">
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo">M31財務部</div>
+      <div class="sidebar-sub">會議記錄管理系統</div>
+    </div>
+    <button class="new-btn" onclick="newMeeting()">＋ 新增會議記錄</button>
+    <div class="sidebar-section">歷史記錄</div>
+    <div class="sidebar-filter">
+      <input class="sidebar-search" type="text" id="historySearch" placeholder="🔍 搜尋追蹤事項或負責人…" oninput="renderHistory()">
+      <div class="sidebar-filter-row">
+        <button class="sf-btn sf-active" data-hf="all" onclick="setHistoryFilter('all')">全部</button>
+        <button class="sf-btn" data-hf="週會" onclick="setHistoryFilter('週會')">週會</button>
+        <button class="sf-btn" data-hf="月會" onclick="setHistoryFilter('月會')">月會</button>
+      </div>
+    </div>
+    <div class="history-count" id="historyCount"></div>
+    <div class="history-list" id="historyList">
+      <div class="no-history">尚無歷史記錄</div>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <main class="main" id="mainContent">
+    <div id="formArea">
+      <!-- Doc Header -->
+      <div class="doc-header">
+        <div class="doc-title">M31財務部會議記錄</div>
+        <div class="doc-subtitle">MEETING MINUTES · FINANCE DEPARTMENT</div>
+      </div>
+
+      <!-- Basic Info -->
+      <div class="form-grid">
+        <div class="form-cell">
+          <div class="cell-label">會議主題</div>
+          <div class="cell-input">
+            <select id="meetingType">
+              <option value="">請選擇…</option>
+              <option value="部門週會">部門週會</option>
+              <option value="部門月會">部門月會</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-cell">
+          <div class="cell-label">會議日期</div>
+          <div class="cell-input">
+            <input type="date" id="meetingDate">
+          </div>
+        </div>
+        <div class="form-cell">
+          <div class="cell-label">開始時間</div>
+          <div class="cell-input">
+            <select id="meetingStartTime" onchange="updateEndTime()"></select>
+          </div>
+        </div>
+        <div class="form-cell">
+          <div class="cell-label">會議長度</div>
+          <div class="cell-input">
+            <select id="meetingDuration" onchange="updateEndTime()">
+              <option value="30">30 分鐘</option>
+              <option value="60" selected>1 小時</option>
+              <option value="90">1.5 小時</option>
+              <option value="120">2 小時</option>
+              <option value="150">2.5 小時</option>
+              <option value="180">3 小時</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-cell full">
+          <div class="cell-label">會議時間</div>
+          <div class="cell-input">
+            <input type="text" id="meetingTime" readonly style="color:var(--muted); background:transparent;">
+          </div>
+        </div>
+        <div class="form-cell full">
+          <div class="cell-label">記錄人</div>
+          <div class="cell-input">
+            <input type="text" id="recorder">
+          </div>
+        </div>
+      </div>
+
+      <!-- Filter Panel -->
+      <div style="display:flex; align-items:center; gap:12px; margin-bottom:16px;">
+        <div class="section-title" style="margin:0">追蹤事項篩選</div>
+        <button class="toggle-filter-btn" id="toggleFilterBtn" onclick="toggleFilter()">🔍 跨會議篩選</button>
+      </div>
+      <div class="filter-panel" id="filterPanel">
+        <div class="filter-controls">
+          <span style="font-size:12px; color:var(--muted); margin-right:4px;">篩選狀態：</span>
+          <button class="filter-btn active-all" data-status="all" onclick="applyFilter('all')">全部</button>
+          <button class="filter-btn" data-status="pending" onclick="applyFilter('pending')">進行中</button>
+          <button class="filter-btn" data-status="done" onclick="applyFilter('done')">已完成</button>
+          <button class="filter-btn" data-status="overdue" onclick="applyFilter('overdue')">逾期</button>
+        </div>
+        <div class="filter-count" id="filterCount"></div>
+        <div class="filter-results" id="filterResults"></div>
+      </div>
+
+      <!-- Discussion -->
+      <div class="section-title">會議討論內容</div>
+      <div class="discussion-box">
+        <textarea id="discussion" placeholder="請輸入本次會議討論事項、決議、備註…" rows="6"></textarea>
+      </div>
+
+      <!-- Follow-up -->
+      <div class="section-title">追蹤事項</div>
+      <table class="followup-table" id="followupTable">
+        <thead>
+          <tr>
+            <th style="width:50px">編號</th>
+            <th>追蹤事項</th>
+            <th style="width:110px">負責人</th>
+            <th style="width:120px">完成日</th>
+            <th style="width:90px">狀態</th>
+            <th style="width:36px"></th>
+          </tr>
+        </thead>
+        <tbody id="followupBody"></tbody>
+      </table>
+      <button class="add-row-btn" onclick="addRow()">＋ 新增追蹤事項</button>
+
+      <!-- Buttons -->
+      <div class="btn-bar">
+        <button class="btn btn-primary" onclick="saveMeeting()">💾 儲存記錄</button>
+        <button class="btn btn-secondary" onclick="printPage()">🖨 列印</button>
+        <button class="btn btn-danger" id="deleteBtn" style="display:none" onclick="deleteCurrentMeeting()">🗑 刪除此記錄</button>
+      </div>
+    </div>
+  </main>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ── State ──
+let meetings = JSON.parse(localStorage.getItem('m31_meetings') || '[]');
+let currentId = null;
+let isNew = true;
+let rowCount = 0;
+
+// ── Init ──
+window.onload = () => {
+  document.getElementById('meetingDate').value = today();
+  buildTimeOptions();
+  updateEndTime();
+  renderHistory();
+  addRow();
+};
+
+function buildTimeOptions() {
+  const sel = document.getElementById('meetingStartTime');
+  for (let h = 0; h < 24; h++) {
+    for (let m = 0; m < 60; m += 30) {
+      const val = h * 60 + m;
+      const label = String(h).padStart(2,'0') + ':' + String(m).padStart(2,'0');
+      const opt = document.createElement('option');
+      opt.value = val;
+      opt.textContent = label;
+      if (val === 9 * 60) opt.selected = true;
+      sel.appendChild(opt);
+    }
+  }
+}
+
+function updateEndTime() {
+  const startMin = parseInt(document.getElementById('meetingStartTime').value);
+  const duration = parseInt(document.getElementById('meetingDuration').value);
+  const endMin = (startMin + duration) % (24 * 60);
+  const fmt = m => String(Math.floor(m/60)).padStart(2,'0') + ':' + String(m%60).padStart(2,'0');
+  document.getElementById('meetingTime').value = fmt(startMin) + ' – ' + fmt(endMin);
+}
+
+function today() {
+  return new Date().toISOString().split('T')[0];
+}
+
+// ── History ──
+let historyFilter = 'all';
+
+function setHistoryFilter(val) {
+  historyFilter = val;
+  document.querySelectorAll('.sf-btn').forEach(b => {
+    b.classList.toggle('sf-active', b.dataset.hf === val);
+  });
+  renderHistory();
+}
+
+function renderHistory() {
+  const list = document.getElementById('historyList');
+  const countEl = document.getElementById('historyCount');
+  const keyword = (document.getElementById('historySearch')?.value || '').trim().toLowerCase();
+
+  if (!meetings.length) {
+    list.innerHTML = '<div class="no-history">尚無歷史記錄<br><small>儲存後即顯示於此</small></div>';
+    countEl.textContent = '';
+    return;
+  }
+
+  let filtered = [...meetings].sort((a, b) => b.date.localeCompare(a.date));
+
+  // Type filter
+  if (historyFilter !== 'all') {
+    filtered = filtered.filter(m => (m.type || '').includes(historyFilter));
+  }
+
+  // Keyword search — from followup items
+  if (keyword) {
+    filtered = filtered.filter(m =>
+      (m.followups || []).some(f =>
+        (f.item || '').toLowerCase().includes(keyword) ||
+        (f.owner || '').toLowerCase().includes(keyword)
+      )
+    );
+  }
+
+  countEl.textContent = `共 ${filtered.length} 筆`;
+
+  if (!filtered.length) {
+    list.innerHTML = '<div class="no-history">無符合條件的記錄</div>';
+    return;
+  }
+
+  list.innerHTML = filtered.map(m => `
+    <div class="history-item ${m.id === currentId ? 'active' : ''}" onclick="loadMeeting('${m.id}')">
+      <div class="history-date">${m.date}</div>
+      <div class="history-type">${m.type || '—'}</div>
+      <div class="history-badge">${countPending(m)}</div>
+    </div>
+  `).join('');
+}
+
+function countPending(m) {
+  const pending = (m.followups || []).filter(f => f.status !== 'done').length;
+  return pending ? `${pending}待辦` : '✓';
+}
+
+// ── New Meeting ──
+function newMeeting() {
+  currentId = null;
+  isNew = true;
+  document.getElementById('meetingType').value = '';
+  document.getElementById('meetingDate').value = today();
+  document.getElementById('meetingStartTime').value = 540;
+  document.getElementById('meetingDuration').value = 60;
+  updateEndTime();
+  document.getElementById('recorder').value = '';
+  document.getElementById('discussion').value = '';
+  document.getElementById('deleteBtn').style.display = 'none';
+  rowCount = 0;
+  document.getElementById('followupBody').innerHTML = '';
+  addRow();
+  renderHistory();
+  if (filterOpen) applyFilter(currentFilter);
+  enableEdit();
+}
+
+// ── Add Row ──
+function addRow() {
+  rowCount++;
+  const num = String(rowCount).padStart(3, '0');
+  const tr = document.createElement('tr');
+  tr.id = `row_${rowCount}`;
+  tr.innerHTML = `
+    <td class="num">${num}</td>
+    <td><input type="text" placeholder="描述追蹤事項…"></td>
+    <td><input type="text" placeholder="姓名"></td>
+    <td><input type="date"></td>
+    <td class="status-cell">
+      <span class="status-badge status-pending" onclick="toggleStatus(this)">進行中</span>
+    </td>
+    <td class="del-row" onclick="this.closest('tr').remove()">✕</td>
+  `;
+  document.getElementById('followupBody').appendChild(tr);
+}
+
+function toggleStatus(el) {
+  if (el.classList.contains('status-pending')) {
+    el.className = 'status-badge status-done';
+    el.textContent = '已完成';
+  } else if (el.classList.contains('status-done')) {
+    el.className = 'status-badge status-overdue';
+    el.textContent = '逾期';
+  } else {
+    el.className = 'status-badge status-pending';
+    el.textContent = '進行中';
+  }
+}
+
+// ── Save ──
+function saveMeeting() {
+  const date = document.getElementById('meetingDate').value;
+  const type = document.getElementById('meetingType').value;
+  if (!date) { showToast('請填寫會議日期'); return; }
+  if (!type) { showToast('請選擇會議主題'); return; }
+
+  const followups = [];
+  document.querySelectorAll('#followupBody tr').forEach((tr, i) => {
+    const cells = tr.querySelectorAll('td');
+    const item = cells[1]?.querySelector('input')?.value || '';
+    if (!item.trim()) return;
+    const statusEl = cells[4]?.querySelector('.status-badge');
+    let status = 'pending';
+    if (statusEl?.classList.contains('status-done')) status = 'done';
+    else if (statusEl?.classList.contains('status-overdue')) status = 'overdue';
+    followups.push({
+      num: String(i + 1).padStart(3, '0'),
+      item,
+      owner: cells[2]?.querySelector('input')?.value || '',
+      deadline: cells[3]?.querySelector('input')?.value || '',
+      status
+    });
+  });
+
+  const data = {
+    id: currentId || Date.now().toString(),
+    date,
+    type,
+    startHour: document.getElementById('meetingStartTime').value,
+    duration: document.getElementById('meetingDuration').value,
+    time: document.getElementById('meetingTime').value,
+    recorder: document.getElementById('recorder').value,
+    discussion: document.getElementById('discussion').value,
+    followups
+  };
+
+  if (currentId) {
+    const idx = meetings.findIndex(m => m.id === currentId);
+    if (idx >= 0) meetings[idx] = data;
+  } else {
+    meetings.push(data);
+    currentId = data.id;
+  }
+
+  localStorage.setItem('m31_meetings', JSON.stringify(meetings));
+  isNew = false;
+  document.getElementById('deleteBtn').style.display = '';
+  renderHistory();
+  if (filterOpen) applyFilter(currentFilter);
+  showToast('✓ 會議記錄已儲存');
+}
+
+// ── Load ──
+function loadMeeting(id) {
+  const m = meetings.find(x => x.id === id);
+  if (!m) return;
+  currentId = id;
+  isNew = false;
+
+  document.getElementById('meetingType').value = m.type || '';
+  document.getElementById('meetingDate').value = m.date || '';
+  if (m.startHour !== undefined) {
+    document.getElementById('meetingStartTime').value = m.startHour;
+    if (m.duration) document.getElementById('meetingDuration').value = m.duration;
+    updateEndTime();
+  } else {
+    document.getElementById('meetingTime').value = m.time || '';
+  }
+  document.getElementById('recorder').value = m.recorder || '';
+  document.getElementById('discussion').value = m.discussion || '';
+  document.getElementById('deleteBtn').style.display = '';
+
+  // Followups
+  rowCount = 0;
+  document.getElementById('followupBody').innerHTML = '';
+  (m.followups || []).forEach(f => {
+    rowCount++;
+    const tr = document.createElement('tr');
+    tr.id = `row_${rowCount}`;
+    let cls = 'status-pending', label = '進行中';
+    if (f.status === 'done') { cls = 'status-done'; label = '已完成'; }
+    else if (f.status === 'overdue') { cls = 'status-overdue'; label = '逾期'; }
+    tr.innerHTML = `
+      <td class="num">${f.num}</td>
+      <td><input type="text" value="${f.item || ''}"></td>
+      <td><input type="text" value="${f.owner || ''}"></td>
+      <td><input type="date" value="${f.deadline || ''}"></td>
+      <td class="status-cell"><span class="status-badge ${cls}" onclick="toggleStatus(this)">${label}</span></td>
+      <td class="del-row" onclick="this.closest('tr').remove()">✕</td>
+    `;
+    document.getElementById('followupBody').appendChild(tr);
+  });
+
+  enableEdit();
+  renderHistory();
+}
+
+// ── Delete ──
+function deleteCurrentMeeting() {
+  if (!currentId) return;
+  if (!confirm('確定刪除此會議記錄？')) return;
+  meetings = meetings.filter(m => m.id !== currentId);
+  localStorage.setItem('m31_meetings', JSON.stringify(meetings));
+  newMeeting();
+  showToast('記錄已刪除');
+}
+
+// ── Filter ──
+let filterOpen = false;
+let currentFilter = 'all';
+
+function toggleFilter() {
+  filterOpen = !filterOpen;
+  const panel = document.getElementById('filterPanel');
+  const btn = document.getElementById('toggleFilterBtn');
+  panel.classList.toggle('open', filterOpen);
+  btn.classList.toggle('on', filterOpen);
+  btn.textContent = filterOpen ? '✕ 關閉篩選' : '🔍 跨會議篩選';
+  if (filterOpen) applyFilter(currentFilter);
+}
+
+function applyFilter(status) {
+  currentFilter = status;
+
+  // Update button states
+  document.querySelectorAll('.filter-btn').forEach(b => {
+    b.className = 'filter-btn';
+    if (b.dataset.status === status) {
+      const map = { all: 'active-all', pending: 'active-pending', done: 'active-done', overdue: 'active-overdue' };
+      b.classList.add(map[status]);
+    }
+  });
+
+  // Collect matching items across all meetings
+  const results = [];
+  meetings.forEach(m => {
+    (m.followups || []).forEach(f => {
+      if (status === 'all' || f.status === status) {
+        results.push({ ...f, meetingDate: m.date, meetingType: m.type || '—', meetingId: m.id });
+      }
+    });
+  });
+
+  // Sort by deadline (empty last), then by date
+  results.sort((a, b) => {
+    if (a.deadline && b.deadline) return a.deadline.localeCompare(b.deadline);
+    if (a.deadline) return -1;
+    if (b.deadline) return 1;
+    return b.meetingDate.localeCompare(a.meetingDate);
+  });
+
+  const count = document.getElementById('filterCount');
+  const container = document.getElementById('filterResults');
+
+  const statusLabel = { all: '全部', pending: '進行中', done: '已完成', overdue: '逾期' };
+  count.textContent = `共找到 ${results.length} 筆「${statusLabel[status]}」追蹤事項`;
+
+  if (!results.length) {
+    container.innerHTML = `<div class="filter-empty">沒有符合條件的追蹤事項</div>`;
+    return;
+  }
+
+  const statusMap = { pending: ['status-pending', '進行中'], done: ['status-done', '已完成'], overdue: ['status-overdue', '逾期'] };
+
+  container.innerHTML = `
+    <table class="filter-result-table">
+      <thead>
+        <tr>
+          <th style="width:110px">會議日期</th>
+          <th style="width:90px">會議類型</th>
+          <th>追蹤事項</th>
+          <th style="width:90px">負責人</th>
+          <th style="width:100px">完成日</th>
+          <th style="width:80px">狀態</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${results.map(r => {
+          const [cls, lbl] = statusMap[r.status] || ['status-pending', '進行中'];
+          return `<tr>
+            <td><span class="filter-date-link" onclick="loadMeeting('${r.meetingId}')">${r.meetingDate}</span></td>
+            <td style="font-size:12px; color:var(--muted)">${r.meetingType}</td>
+            <td>${r.item || '—'}</td>
+            <td>${r.owner || '—'}</td>
+            <td style="font-size:12px">${r.deadline || '—'}</td>
+            <td><span class="status-badge ${cls}" style="cursor:default">${lbl}</span></td>
+          </tr>`;
+        }).join('')}
+      </tbody>
+    </table>
+  `;
+}
+
+// ── Edit Mode ──
+function enableEdit() {
+  document.getElementById('formArea').classList.remove('view-mode');
+}
+
+// ── Print ──
+function printPage() {
+  window.print();
+}
+
+// ── Toast ──
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2800);
+}
+</script>
+</body>
+</html>
