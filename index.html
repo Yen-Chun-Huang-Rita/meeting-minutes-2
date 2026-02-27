@@ -1225,8 +1225,8 @@ function addRow(carryFrom) {
   const tr = document.createElement('tr');
   tr.id = `row_${rowCount}`;
   const sourceHtml = carryFrom
-    ? `<td style="text-align:center"><span class="carryover-tag" title="${t('carryoverFrom')} ${carryFrom.date}" onclick="loadMeeting('${carryFrom.id}')">↩ ${carryFrom.date}</span></td>`
-    : `<td style="text-align:center; color:#ccc; font-size:11px">—</td>`;
+    ? `<td style="text-align:center"><span class="carryover-tag source-tag" data-src-id="${carryFrom.id}" data-src-date="${carryFrom.date}" title="${t('carryoverFrom')} ${carryFrom.date}" onclick="loadMeeting('${carryFrom.id}')">${t('sourceContinuedFrom')} ${carryFrom.date}</span></td>`
+    : `<td style="text-align:center; font-size:12px; color:var(--muted)" class="source-this">${t('sourceThisMeeting')}</td>`;
   tr.innerHTML = `
     <td class="num">${num}</td>
     <td><textarea class="item-input" placeholder="${t('itemPlaceholder')}" oninput="autoResize(this)" rows="1"></textarea></td>
@@ -1366,8 +1366,8 @@ function loadMeeting(id) {
     else if (f.status === 'overdue') { cls = 'status-overdue'; label = t('overdue'); }
     else if (f.status === 'continued') { cls = 'status-continued'; label = t('continued'); }
     const sourceHtml = f.carryFrom
-      ? `<td style="text-align:center"><span class="carryover-tag" title="${t('carryoverFrom')} ${f.carryFrom.date}" onclick="loadMeeting('${f.carryFrom.id}')">↩ ${f.carryFrom.date}</span></td>`
-      : `<td style="text-align:center; color:#ccc; font-size:11px">—</td>`;
+      ? `<td style="text-align:center"><span class="carryover-tag source-tag" data-src-id="${f.carryFrom.id}" data-src-date="${f.carryFrom.date}" title="${t('carryoverFrom')} ${f.carryFrom.date}" onclick="loadMeeting('${f.carryFrom.id}')">${t('sourceContinuedFrom')} ${f.carryFrom.date}</span></td>`
+      : `<td style="text-align:center; font-size:12px; color:var(--muted)" class="source-this">${t('sourceThisMeeting')}</td>`;
     tr.innerHTML = `
       <td class="num">${f.num}</td>
       <td><textarea class="item-input" oninput="autoResize(this)" rows="1">${f.item || ''}</textarea></td>
@@ -1475,7 +1475,7 @@ function confirmCarryover() {
       <td><input type="text" value="${cb.dataset.owner || ''}"></td>
       <td><input type="text" class="deadline-input" value="${cb.dataset.deadline || ''}" placeholder="${t('deadlinePlaceholder')}" readonly style="cursor:pointer"></td>
       <td class="status-cell"><span class="status-badge status-pending" onclick="toggleStatus(this)">${t('inProgress')}</span></td>
-      <td style="text-align:center"><span class="carryover-tag" title="${t('carryoverFrom')} ${carryFrom.date}" onclick="loadMeeting('${carryFrom.id}')">↩ ${carryFrom.date}</span></td>
+      <td style="text-align:center"><span class="carryover-tag source-tag" data-src-id="${carryFrom.id}" data-src-date="${carryFrom.date}" title="${t('carryoverFrom')} ${carryFrom.date}" onclick="loadMeeting('${carryFrom.id}')">${t('sourceContinuedFrom')} ${carryFrom.date}</span></td>
       <td class="del-row" onclick="this.closest('tr').remove()">✕</td>
     `;
     tbody.appendChild(tr);
@@ -2015,10 +2015,92 @@ function t(key) {
   return val;
 }
 
+// ── Google Translate (unofficial) ──
+var _translationCache = {};
+
+async function googleTranslate(text, targetLang) {
+  if (!text || !text.trim()) return text;
+  var sl = targetLang === 'en' ? 'zh-TW' : 'en';
+  var tl = targetLang === 'en' ? 'en' : 'zh-TW';
+  var url = 'https://translate.googleapis.com/translate_a/single?client=gtx&sl=' + sl + '&tl=' + tl + '&dt=t&q=' + encodeURIComponent(text);
+  var res = await fetch(url);
+  var data = await res.json();
+  // Response: [ [ ["translated","original",...], ... ], ... ]
+  return data[0].map(function(seg) { return seg[0]; }).join('');
+}
+
+async function translateContent(targetLang) {
+  var discussion = document.getElementById('discussion').value.trim();
+  var rows = Array.from(document.querySelectorAll('#followupBody tr'));
+  var items = rows.map(function(tr) {
+    return {
+      itemEl: tr.querySelector('textarea.item-input'),
+      ownerEl: tr.querySelector('td:nth-child(3) input'),
+      item: (tr.querySelector('textarea.item-input') || {}).value || '',
+      owner: (tr.querySelector('td:nth-child(3) input') || {}).value || ''
+    };
+  });
+
+  var hasContent = discussion || items.some(function(i) { return i.item.trim(); });
+  if (!hasContent) return;
+
+  var cacheKey = targetLang + '|' + discussion + '|' + JSON.stringify(items.map(function(i){ return {item:i.item, owner:i.owner}; }));
+  if (_translationCache[cacheKey]) {
+    applyTranslation(_translationCache[cacheKey], rows);
+    return;
+  }
+
+  // Loading state
+  var btn = document.getElementById('langToggleBtn');
+  var origText = btn.textContent;
+  btn.textContent = '...';
+  btn.disabled = true;
+
+  try {
+    // Translate all texts in parallel
+    var promises = [googleTranslate(discussion, targetLang)];
+    items.forEach(function(i) {
+      promises.push(googleTranslate(i.item, targetLang));
+      // Don't translate owner (proper name)
+    });
+
+    var results = await Promise.all(promises);
+    var translated = {
+      discussion: results[0],
+      items: items.map(function(i, idx) {
+        return { item: results[idx + 1], owner: i.owner };
+      })
+    };
+
+    _translationCache[cacheKey] = translated;
+    applyTranslation(translated, rows);
+    showToast(targetLang === 'en' ? '✓ Translated' : '✓ 翻譯完成');
+  } catch(e) {
+    console.error('Translation error:', e);
+    showToast(targetLang === 'en' ? '⚠️ Translation failed' : '⚠️ 翻譯失敗，請確認網路連線');
+  } finally {
+    btn.textContent = origText;
+    btn.disabled = false;
+  }
+}
+
+function applyTranslation(result, rows) {
+  var disc = document.getElementById('discussion');
+  if (disc && result.discussion !== undefined) disc.value = result.discussion;
+
+  (rows || Array.from(document.querySelectorAll('#followupBody tr'))).forEach(function(tr, i) {
+    var r = result.items && result.items[i];
+    if (!r) return;
+    var itemEl = tr.querySelector('textarea.item-input');
+    if (itemEl && r.item !== undefined) { itemEl.value = r.item; autoResize(itemEl); }
+  });
+}
+
 function toggleLang() {
   currentLang = currentLang === 'zh' ? 'en' : 'zh';
   localStorage.setItem('m31_lang', currentLang);
   applyLang();
+  translateContent(currentLang);
 }
 
 function applyLang() {
@@ -2130,6 +2212,15 @@ function applyLang() {
     if (filterOpen) applyFilter(currentFilter);
 
     reInitAllPickers();
+    // Refresh source column labels
+    document.querySelectorAll('.source-this').forEach(function(el) {
+      el.textContent = d.sourceThisMeeting;
+    });
+    document.querySelectorAll('.source-tag').forEach(function(el) {
+      var date = el.getAttribute('data-src-date') || '';
+      el.textContent = d.sourceContinuedFrom + ' ' + date;
+      el.title = d.carryoverFrom + ' ' + date;
+    });
 
     // Update existing row placeholders
     document.querySelectorAll('textarea.item-input').forEach(function(el) {
