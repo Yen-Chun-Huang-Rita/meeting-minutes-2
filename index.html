@@ -4,7 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>M31財務部會議記錄系統</title>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700&family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <style>
   :root {
     --ink: #1a1a2e;
@@ -24,7 +25,9 @@
   * { box-sizing: border-box; margin: 0; padding: 0; }
 
   body {
-    font-family: 'Noto Sans TC', sans-serif;
+    line-height: 1.7;
+    letter-spacing: 0.02em;
+    font-family: Georgia, 'Times New Roman', serif; line-height: 1.7; letter-spacing: 0.03em;
     background: var(--paper);
     color: var(--ink);
     min-height: 100vh;
@@ -55,7 +58,7 @@
     border: 1px solid rgba(255,255,255,0.15);
     background: transparent;
     color: #a0b0c0;
-    font-family: 'Noto Sans TC', sans-serif;
+    font-family: Georgia, 'Times New Roman', serif; line-height: 1.7; letter-spacing: 0.03em;
     font-size: 11px;
     font-weight: 600;
     cursor: pointer;
@@ -74,7 +77,7 @@
     border-radius: 4px;
     padding: 6px 10px;
     color: #ddd;
-    font-family: 'Noto Sans TC', sans-serif;
+    font-family: Georgia, 'Times New Roman', serif; line-height: 1.7; letter-spacing: 0.03em;
     font-size: 12px;
     outline: none;
     margin-bottom: 6px;
@@ -111,7 +114,7 @@
   }
 
   .sidebar-logo {
-    font-family: 'Noto Serif TC', serif;
+    font-family: Georgia, 'Times New Roman', serif; line-height: 1.7; letter-spacing: 0.03em;
     font-size: 22px;
     font-weight: 700;
     color: var(--gold);
@@ -142,7 +145,7 @@
     color: var(--ink);
     border: none;
     border-radius: 6px;
-    font-family: 'Noto Sans TC', sans-serif;
+    font-family: Georgia, 'Times New Roman', serif; line-height: 1.7; letter-spacing: 0.03em;
     font-size: 13px;
     font-weight: 700;
     cursor: pointer;
@@ -214,7 +217,7 @@
   }
 
   .doc-title {
-    font-family: 'Noto Serif TC', serif;
+    font-family: Georgia, 'Times New Roman', serif; line-height: 1.7; letter-spacing: 0.03em;
     font-size: 26px;
     font-weight: 700;
     letter-spacing: 6px;
@@ -274,7 +277,7 @@
     width: 100%;
     border: none;
     background: transparent;
-    font-family: 'Noto Sans TC', sans-serif;
+    font-family: Georgia, 'Times New Roman', serif; line-height: 1.7; letter-spacing: 0.03em;
     font-size: 13px;
     color: var(--ink);
     outline: none;
@@ -285,7 +288,7 @@
 
   /* ── Section Title ── */
   .section-title {
-    font-family: 'Noto Serif TC', serif;
+    font-family: Georgia, 'Times New Roman', serif; line-height: 1.7; letter-spacing: 0.03em;
     font-size: 15px;
     font-weight: 700;
     color: var(--steel);
@@ -307,7 +310,7 @@
     border: none;
     outline: none;
     padding: 14px;
-    font-family: 'Noto Sans TC', sans-serif;
+    font-family: Georgia, 'Times New Roman', serif; line-height: 1.7; letter-spacing: 0.03em;
     font-size: 13px;
     color: var(--ink);
     background: transparent;
@@ -347,7 +350,7 @@
     border: none;
     outline: none;
     background: transparent;
-    font-family: 'Noto Sans TC', sans-serif;
+    font-family: Georgia, 'Times New Roman', serif; line-height: 1.7; letter-spacing: 0.03em;
     font-size: 13px;
     color: var(--ink);
     padding: 4px 4px;
@@ -358,7 +361,7 @@
     border: none;
     outline: none;
     background: transparent;
-    font-family: 'Noto Sans TC', sans-serif;
+    font-family: Georgia, 'Times New Roman', serif; line-height: 1.7; letter-spacing: 0.03em;
     font-size: 13px;
     color: var(--ink);
     padding: 4px 4px;
@@ -415,7 +418,7 @@
     font-size: 12px;
     cursor: pointer;
     transition: all 0.2s;
-    font-family: 'Noto Sans TC', sans-serif;
+    font-family: Georgia, 'Times New Roman', serif; line-height: 1.7; letter-spacing: 0.03em;
     display: flex;
     align-items: center;
     gap: 6px;
@@ -441,7 +444,7 @@
     padding: 10px 24px;
     border: none;
     border-radius: 4px;
-    font-family: 'Noto Sans TC', sans-serif;
+    font-family: Georgia, 'Times New Roman', serif; line-height: 1.7; letter-spacing: 0.03em;
     font-size: 13px;
     font-weight: 700;
     cursor: pointer;
@@ -516,7 +519,7 @@
   .filter-panel.open { display: block; }
 
   .filter-panel-title {
-    font-family: 'Noto Serif TC', serif;
+    font-family: Georgia, 'Times New Roman', serif; line-height: 1.7; letter-spacing: 0.03em;
     font-size: 15px;
     font-weight: 700;
     color: var(--steel);
@@ -537,7 +540,7 @@
     border-radius: 20px;
     border: 1px solid var(--border);
     background: transparent;
-    font-family: 'Noto Sans TC', sans-serif;
+    font-family: Georgia, 'Times New Roman', serif; line-height: 1.7; letter-spacing: 0.03em;
     font-size: 12px;
     font-weight: 600;
     cursor: pointer;
@@ -611,7 +614,7 @@
     background: transparent;
     border: 1px solid var(--border);
     border-radius: 4px;
-    font-family: 'Noto Sans TC', sans-serif;
+    font-family: Georgia, 'Times New Roman', serif; line-height: 1.7; letter-spacing: 0.03em;
     font-size: 12px;
     color: var(--muted);
     cursor: pointer;
@@ -683,7 +686,7 @@
   }
 
   .modal-title {
-    font-family: 'Noto Serif TC', serif;
+    font-family: Georgia, 'Times New Roman', serif; line-height: 1.7; letter-spacing: 0.03em;
     font-size: 16px;
     font-weight: 700;
     color: var(--steel);
@@ -754,11 +757,84 @@
     font-size: 13px;
   }
 
+  /* ── Email Modal ── */
+  .email-field {
+    margin-bottom: 14px;
+  }
+
+  .email-field label {
+    display: block;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--gold);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 5px;
+  }
+
+  .email-field input,
+  .email-field textarea {
+    width: 100%;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 8px 10px;
+    font-family: Georgia, 'Times New Roman', serif; line-height: 1.7; letter-spacing: 0.03em;
+    font-size: 13px;
+    color: var(--ink);
+    background: #fff;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .email-field input:focus,
+  .email-field textarea:focus { border-color: var(--gold); }
+
+  .email-field textarea { resize: vertical; min-height: 80px; line-height: 1.6; }
+
+  .contacts-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 8px;
+  }
+
+  .contact-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 10px;
+    background: var(--cream);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.15s;
+    user-select: none;
+  }
+
+  .contact-chip:hover { border-color: var(--gold); background: rgba(201,168,76,0.1); }
+  .contact-chip.selected { background: var(--gold); color: var(--ink); border-color: var(--gold); font-weight: 600; }
+
+  .contact-chip .chip-name { font-weight: 600; }
+  .contact-chip .chip-email { color: var(--muted); font-size: 11px; }
+  .contact-chip.selected .chip-email { color: var(--ink); }
+
+  .email-hint {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 6px;
+    line-height: 1.5;
+  }
+
+  .email-hint strong { color: var(--steel); }
+
   /* ── Print ── */
   @media print {
     .sidebar, .btn-bar, .view-actions, .add-row-btn, .del-row { display: none !important; }
     .main { padding: 20px; max-width: 100%; }
-    body { background: #fff; }
+    body {
+    line-height: 1.7;
+    letter-spacing: 0.02em; background: #fff; }
   }
 
   /* ── Scrollbar ── */
@@ -773,22 +849,23 @@
   <aside class="sidebar">
     <div class="sidebar-header">
       <div class="sidebar-logo">M31財務部</div>
-      <div class="sidebar-sub">會議記錄管理系統</div>
+      <div class="sidebar-sub" id="i18n-sidebar-sub">會議記錄管理系統</div>
+      <button id="langToggleBtn" onclick="toggleLang()" style="margin-top:8px;background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.25);color:#fff;border-radius:4px;padding:4px 10px;font-size:11px;cursor:pointer;letter-spacing:1px;">EN</button>
     </div>
-    <button class="new-btn" onclick="newMeeting()">＋ 新增會議記錄</button>
-    <div class="sidebar-section">歷史記錄</div>
+    <button class="new-btn" onclick="newMeeting()"><span data-i18n="newMeeting">新增會議記錄</span></button>
+    <div class="sidebar-section" data-i18n="history">歷史記錄</div>
     <div class="sidebar-filter">
       <input class="sidebar-search" type="text" id="historySearch" placeholder="🔍 搜尋追蹤事項或負責人…" oninput="renderHistory()">
       <div class="sidebar-filter-row">
-        <button class="sf-btn sf-active" data-hf="all" onclick="setHistoryFilter('all')">全部</button>
-        <button class="sf-btn" data-hf="週會" onclick="setHistoryFilter('週會')">週會</button>
-        <button class="sf-btn" data-hf="月會" onclick="setHistoryFilter('月會')">月會</button>
+        <button class="sf-btn sf-active" data-hf="all" onclick="setHistoryFilter('all')" data-i18n="all">全部</button>
+        <button class="sf-btn" data-hf="週會" onclick="setHistoryFilter('週會')" data-i18n="weekly">週會</button>
+        <button class="sf-btn" data-hf="月會" onclick="setHistoryFilter('月會')" data-i18n="monthly">月會</button>
       </div>
       <div class="sidebar-filter-row">
-        <button class="sf-btn" data-hf="專案" onclick="setHistoryFilter('專案')">專案</button>
+        <button class="sf-btn" data-hf="專案" onclick="setHistoryFilter('專案')" data-i18n="project">專案</button>
         <button class="sf-btn" data-hf="KPI" onclick="setHistoryFilter('KPI')">KPI</button>
-        <button class="sf-btn" data-hf="系統" onclick="setHistoryFilter('系統')">系統</button>
-        <button class="sf-btn" data-hf="其他" onclick="setHistoryFilter('其他')">其他</button>
+        <button class="sf-btn" data-hf="系統" onclick="setHistoryFilter('系統')" data-i18n="system">系統</button>
+        <button class="sf-btn" data-hf="其他" onclick="setHistoryFilter('其他')" data-i18n="other">其他</button>
       </div>
     </div>
     <div class="history-count" id="historyCount"></div>
@@ -803,58 +880,59 @@
       <!-- Doc Header -->
       <div class="doc-header">
         <div class="doc-title">M31財務部會議記錄</div>
-        <div class="doc-subtitle">MEETING MINUTES · FINANCE DEPARTMENT</div>
+        <div id="i18n-doc-title" style="display:none;font-family: Georgia, 'Times New Roman', serif; line-height: 1.7; letter-spacing: 0.03em;font-size:22px;font-weight:700;letter-spacing:4px;color:var(--steel)">M31 Finance Dept. Meeting Minutes</div>
+        <div class="doc-subtitle" id="i18n-doc-subtitle">MEETING MINUTES · FINANCE DEPARTMENT</div>
       </div>
 
       <!-- Basic Info -->
       <div class="form-grid">
         <div class="form-cell">
-          <div class="cell-label">會議主題</div>
+          <div class="cell-label" data-i18n="meetingType">會議主題</div>
           <div class="cell-input">
             <select id="meetingType">
               <option value="">請選擇…</option>
-              <option value="部門週會">部門週會</option>
-              <option value="部門月會">部門月會</option>
-              <option value="專案">專案</option>
+              <option value="部門週會" data-i18n-val="weekly">部門週會</option>
+              <option value="部門月會" data-i18n-val="monthly">部門月會</option>
+              <option value="專案" data-i18n-val="project">專案</option>
               <option value="KPI">KPI</option>
-              <option value="系統">系統</option>
-              <option value="其他">其他</option>
+              <option value="系統" data-i18n-val="system">系統</option>
+              <option value="其他" data-i18n-val="other">其他</option>
             </select>
           </div>
         </div>
         <div class="form-cell">
-          <div class="cell-label">會議日期</div>
+          <div class="cell-label" data-i18n="meetingDate">會議日期</div>
           <div class="cell-input">
             <input type="date" id="meetingDate">
           </div>
         </div>
         <div class="form-cell">
-          <div class="cell-label">開始時間</div>
+          <div class="cell-label" data-i18n="startTime">開始時間</div>
           <div class="cell-input">
             <select id="meetingStartTime" onchange="updateEndTime()"></select>
           </div>
         </div>
         <div class="form-cell">
-          <div class="cell-label">會議長度</div>
+          <div class="cell-label" data-i18n="duration">會議長度</div>
           <div class="cell-input">
             <select id="meetingDuration" onchange="updateEndTime()">
-              <option value="30">30 分鐘</option>
-              <option value="60" selected>1 小時</option>
-              <option value="90">1.5 小時</option>
-              <option value="120">2 小時</option>
-              <option value="150">2.5 小時</option>
-              <option value="180">3 小時</option>
+              <option value="30" data-i18n="d30">30 分鐘</option>
+              <option value="60" selected data-i18n="d60">1 小時</option>
+              <option value="90" data-i18n="d90">1.5 小時</option>
+              <option value="120" data-i18n="d120">2 小時</option>
+              <option value="150" data-i18n="d150">2.5 小時</option>
+              <option value="180" data-i18n="d180">3 小時</option>
             </select>
           </div>
         </div>
         <div class="form-cell full">
-          <div class="cell-label">會議時間</div>
+          <div class="cell-label" data-i18n="meetingTime">會議時間</div>
           <div class="cell-input">
             <input type="text" id="meetingTime" readonly style="color:var(--muted); background:transparent;">
           </div>
         </div>
         <div class="form-cell full">
-          <div class="cell-label">記錄人</div>
+          <div class="cell-label" data-i18n="recorder">記錄人</div>
           <div class="cell-input">
             <input type="text" id="recorder">
           </div>
@@ -863,67 +941,124 @@
 
       <!-- Filter Panel -->
       <div style="display:flex; align-items:center; gap:12px; margin-bottom:16px;">
-        <div class="section-title" style="margin:0">追蹤事項篩選</div>
-        <button class="toggle-filter-btn" id="toggleFilterBtn" onclick="toggleFilter()">🔍 跨會議篩選</button>
+        <div class="section-title" style="margin:0" data-i18n="followupFilter">追蹤事項篩選</div>
+        <button class="toggle-filter-btn" id="toggleFilterBtn" onclick="toggleFilter()" data-i18n="crossFilter">🔍 跨會議篩選</button>
       </div>
       <div class="filter-panel" id="filterPanel">
         <div class="filter-controls">
-          <span style="font-size: 12px; color:var(--muted); margin-right:4px;">篩選狀態：</span>
-          <button class="filter-btn active-all" data-status="all" onclick="applyFilter('all')">全部</button>
-          <button class="filter-btn" data-status="pending" onclick="applyFilter('pending')">進行中</button>
-          <button class="filter-btn" data-status="done" onclick="applyFilter('done')">已完成</button>
-          <button class="filter-btn" data-status="overdue" onclick="applyFilter('overdue')">逾期</button>
+          <span style="font-size: 12px; color:var(--muted); margin-right:4px;"><span data-i18n="filterStatus">篩選狀態：</span>
+          <button class="filter-btn active-all" data-status="all" onclick="applyFilter('all')" data-i18n="all">全部</button>
+          <button class="filter-btn" data-status="pending" onclick="applyFilter('pending')" data-i18n="inProgress">進行中</button>
+          <button class="filter-btn" data-status="done" onclick="applyFilter('done')" data-i18n="done">已完成</button>
+          <button class="filter-btn" data-status="overdue" onclick="applyFilter('overdue')" data-i18n="overdue">逾期</button>
         </div>
         <div class="filter-count" id="filterCount"></div>
         <div class="filter-results" id="filterResults"></div>
       </div>
 
       <!-- Discussion -->
-      <div class="section-title">會議討論內容</div>
+      <div class="section-title" data-i18n="discussion">會議討論內容</div>
       <div class="discussion-box">
         <textarea id="discussion" placeholder="請輸入本次會議討論事項、決議、備註…" rows="6"></textarea>
       </div>
 
       <!-- Follow-up -->
-      <div class="section-title">追蹤事項</div>
+      <div class="section-title" data-i18n="followupItems">追蹤事項</div>
       <table class="followup-table" id="followupTable">
         <thead>
           <tr>
-            <th style="width:55px">編號</th>
-            <th>追蹤事項</th>
-            <th style="width:120px">負責人</th>
-            <th style="width:130px">完成日</th>
-            <th style="width:90px">狀態</th>
-            <th style="width:90px">來源</th>
+            <th style="width:55px" data-i18n="no">編號</th>
+            <th data-i18n="followupItem">追蹤事項</th>
+            <th style="width:120px" data-i18n="owner">負責人</th>
+            <th style="width:130px" data-i18n="deadline">完成日</th>
+            <th style="width:90px" data-i18n="status">狀態</th>
+            <th style="width:90px" data-i18n="source">來源</th>
             <th style="width:36px"></th>
           </tr>
         </thead>
         <tbody id="followupBody"></tbody>
       </table>
-      <button class="add-row-btn" onclick="addRow()">＋ 新增追蹤事項</button>
+      <button class="add-row-btn" onclick="addRow()"><span data-i18n="addItem">新增追蹤事項</span></button>
 
       <!-- Buttons -->
       <div class="btn-bar">
-        <button class="btn btn-primary" onclick="saveMeeting()">💾 儲存記錄</button>
-        <button class="btn btn-secondary" onclick="openCarryoverModal()">↩ 延續追蹤</button>
-        <button class="btn btn-secondary" onclick="printPage()">🖨 列印</button>
-        <button class="btn btn-danger" id="deleteBtn" style="display:none" onclick="deleteCurrentMeeting()">🗑 刪除此記錄</button>
+        <button class="btn btn-primary" onclick="saveMeeting()" data-i18n="save">💾 儲存記錄</button>
+        <button class="btn btn-secondary" onclick="openCarryoverModal()" data-i18n="carryover">↩ 延續追蹤</button>
+        <button class="btn btn-secondary" onclick="openEmailModal()" data-i18n="sendEmail">📧 寄送記錄</button>
+        <button class="btn btn-secondary" onclick="printPage()" data-i18n="print">🖨 列印</button>
+        <button class="btn btn-danger" id="deleteBtn" style="display:none" onclick="deleteCurrentMeeting()" data-i18n="delete">🗑 刪除此記錄</button>
       </div>
     </div>
   </main>
+</div>
+
+<!-- Email Modal -->
+<div class="modal-overlay" id="emailModal">
+  <div class="modal-box" style="width:560px">
+    <div class="modal-header">
+      <div class="modal-title" data-i18n="emailModalTitle">📧 寄送會議記錄</div>
+      <button class="modal-close" onclick="closeEmailModal()">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="email-field">
+        <label data-i18n="contacts">固定聯絡人（點選加入收件人）</label>
+        <div class="contacts-list" id="contactChips"></div>
+      </div>
+      <div class="email-field">
+        <label>收件人 Email</label>
+        <input type="text" id="emailTo" placeholder="多位收件人以分號 ; 分隔">
+      </div>
+      <div class="email-field">
+        <label data-i18n="cc">副本 CC</label>
+        <input type="text" id="emailCc" placeholder="選填，多位以分號 ; 分隔">
+      </div>
+      <div class="email-field">
+        <label data-i18n="subject">主旨</label>
+        <input type="text" id="emailSubject">
+      </div>
+      <div class="email-field">
+        <label data-i18n="emailBody">信件內文</label>
+        <textarea id="emailBody" rows="5"></textarea>
+      </div>
+      <div class="email-hint">
+        💡 點擊「寄送」後系統會自動產生 PDF 並透過本機伺服器寄出。請先在終端機執行 <strong>node server.js</strong>。
+      </div>
+    </div>
+    <div class="modal-footer">
+      <div style="margin-right:auto">
+        <button class="btn btn-secondary" onclick="manageContacts()" style="font-size:11px; padding:6px 12px" data-i18n="manageContacts">⚙️ 管理聯絡人</button>
+      </div>
+      <button class="btn btn-secondary" onclick="closeEmailModal()">取消</button>
+      <button class="btn btn-primary" onclick="sendEmail()" data-i18n="sendBtn">📧 寄送</button>
+    </div>
+  </div>
+</div>
+
+<!-- Contacts Manager Modal -->
+<div class="modal-overlay" id="contactsModal">
+  <div class="modal-box" style="width:460px">
+    <div class="modal-header">
+      <div class="modal-title" data-i18n="manageContactsTitle">⚙️ 管理固定聯絡人</div>
+      <button class="modal-close" onclick="closeContactsModal()">×</button>
+    </div>
+    <div class="modal-body" id="contactsManagerBody"></div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeContactsModal()" data-i18n="close">關閉</button>
+    </div>
+  </div>
 </div>
 
 <!-- Carry-over Modal -->
 <div class="modal-overlay" id="carryoverModal">
   <div class="modal-box">
     <div class="modal-header">
-      <div class="modal-title">↩ 延續追蹤事項</div>
+      <div class="modal-title" data-i18n="carryoverTitle">↩ 延續追蹤事項</div>
       <button class="modal-close" onclick="closeCarryoverModal()">×</button>
     </div>
     <div class="modal-body" id="carryoverModalBody"></div>
     <div class="modal-footer">
       <button class="btn btn-secondary" onclick="closeCarryoverModal()">取消</button>
-      <button class="btn btn-primary" onclick="confirmCarryover()">帶入選取事項</button>
+      <button class="btn btn-primary" onclick="confirmCarryover()" data-i18n="confirmCarryover">帶入選取事項</button>
     </div>
   </div>
 </div>
@@ -990,7 +1125,7 @@ function renderHistory() {
   const keyword = (document.getElementById('historySearch')?.value || '').trim().toLowerCase();
 
   if (!meetings.length) {
-    list.innerHTML = '<div class="no-history">尚無歷史記錄<br><small>儲存後即顯示於此</small></div>';
+    list.innerHTML = `<div class="no-history">${t('noHistory')}<br><small>${t('noHistorySmall')}</small></div>`;
     countEl.textContent = '';
     return;
   }
@@ -1012,25 +1147,32 @@ function renderHistory() {
     );
   }
 
-  countEl.textContent = `共 ${filtered.length} 筆`;
+  countEl.textContent = currentLang === 'en'
+    ? filtered.length + ' record(s)'
+    : '共 ' + filtered.length + ' 筆';
 
   if (!filtered.length) {
-    list.innerHTML = '<div class="no-history">無符合條件的記錄</div>';
+    list.innerHTML = '<div class="no-history">' + t('noMatch') + '</div>';
     return;
   }
 
-  list.innerHTML = filtered.map(m => `
-    <div class="history-item ${m.id === currentId ? 'active' : ''}" onclick="loadMeeting('${m.id}')">
-      <div class="history-date">${m.date}</div>
-      <div class="history-type">${m.type || '—'}</div>
-      <div class="history-badge">${countPending(m)}</div>
-    </div>
-  `).join('');
+  var typeDisplayMap = {
+    '部門週會': t('typeWeekly'), '部門月會': t('typeMonthly'),
+    '專案': t('project'), 'KPI': 'KPI', '系統': t('system'), '其他': t('other')
+  };
+
+  list.innerHTML = filtered.map(function(m) {
+    return '<div class="history-item ' + (m.id === currentId ? 'active' : '') + '" onclick="loadMeeting(\'' + m.id + '\')">' +
+      '<div class="history-date">' + m.date + '</div>' +
+      '<div class="history-type">' + (typeDisplayMap[m.type] || m.type || '—') + '</div>' +
+      '<div class="history-badge">' + countPending(m) + '</div>' +
+    '</div>';
+  }).join('');
 }
 
 function countPending(m) {
   const pending = (m.followups || []).filter(f => f.status !== 'done').length;
-  return pending ? `${pending}待辦` : '✓';
+  return pending ? `${pending} ${t('pending')}` : '✓';
 }
 
 // ── New Meeting ──
@@ -1068,7 +1210,7 @@ function addRow(carryFrom) {
     <td><input type="text" placeholder="姓名"></td>
     <td><input type="date"></td>
     <td class="status-cell">
-      <span class="status-badge status-pending" onclick="toggleStatus(this)">進行中</span>
+      <span class="status-badge status-pending" onclick="toggleStatus(this)">${t('inProgress')}</span>
     </td>
     ${sourceHtml}
     <td class="del-row" onclick="this.closest('tr').remove()">✕</td>
@@ -1079,16 +1221,16 @@ function addRow(carryFrom) {
 function toggleStatus(el) {
   if (el.classList.contains('status-pending')) {
     el.className = 'status-badge status-done';
-    el.textContent = '已完成';
+    el.textContent = t('done');
   } else if (el.classList.contains('status-done')) {
     el.className = 'status-badge status-overdue';
-    el.textContent = '逾期';
+    el.textContent = t('overdue');
   } else if (el.classList.contains('status-overdue')) {
     el.className = 'status-badge status-continued';
-    el.textContent = '已延續';
+    el.textContent = t('continued');
   } else {
     el.className = 'status-badge status-pending';
-    el.textContent = '進行中';
+    el.textContent = t('inProgress');
   }
 }
 
@@ -1106,8 +1248,8 @@ function autoResizeAll() {
 function saveMeeting() {
   const date = document.getElementById('meetingDate').value;
   const type = document.getElementById('meetingType').value;
-  if (!date) { showToast('請填寫會議日期'); return; }
-  if (!type) { showToast('請選擇會議主題'); return; }
+  if (!date) { showToast(t('validDate')); return; }
+  if (!type) { showToast(t('validType')); return; }
 
   const followups = [];
   document.querySelectorAll('#followupBody tr').forEach((tr, i) => {
@@ -1165,7 +1307,7 @@ function saveMeeting() {
   document.getElementById('deleteBtn').style.display = '';
   renderHistory();
   if (filterOpen) applyFilter(currentFilter);
-  showToast('✓ 會議記錄已儲存');
+  showToast(t('toastSaved'));
 }
 
 // ── Load ──
@@ -1195,10 +1337,10 @@ function loadMeeting(id) {
     rowCount++;
     const tr = document.createElement('tr');
     tr.id = `row_${rowCount}`;
-    let cls = 'status-pending', label = '進行中';
-    if (f.status === 'done') { cls = 'status-done'; label = '已完成'; }
-    else if (f.status === 'overdue') { cls = 'status-overdue'; label = '逾期'; }
-    else if (f.status === 'continued') { cls = 'status-continued'; label = '已延續'; }
+    let cls = 'status-pending', label = t('inProgress');
+    if (f.status === 'done') { cls = 'status-done'; label = t('done'); }
+    else if (f.status === 'overdue') { cls = 'status-overdue'; label = t('overdue'); }
+    else if (f.status === 'continued') { cls = 'status-continued'; label = t('continued'); }
     const sourceHtml = f.carryFrom
       ? `<td style="text-align:center"><span class="carryover-tag" title="來自 ${f.carryFrom.date}" onclick="loadMeeting('${f.carryFrom.id}')">↩ ${f.carryFrom.date}</span></td>`
       : `<td style="text-align:center; color:#ccc; font-size:11px">—</td>`;
@@ -1222,11 +1364,11 @@ function loadMeeting(id) {
 // ── Delete ──
 function deleteCurrentMeeting() {
   if (!currentId) return;
-  if (!confirm('確定刪除此會議記錄？')) return;
+  if (!confirm(t('confirmDelete'))) return;
   meetings = meetings.filter(m => m.id !== currentId);
   localStorage.setItem('m31_meetings', JSON.stringify(meetings));
   newMeeting();
-  showToast('記錄已刪除');
+  showToast(t('toastDeleted'));
 }
 
 // ── Carry-over ──
@@ -1259,7 +1401,7 @@ function openCarryoverModal() {
           <input type="checkbox" ${alreadyIn ? 'checked' : ''} data-src-id="${m.id}" data-src-date="${m.date}" data-item="${(f.item||'').replace(/"/g,'&quot;')}" data-owner="${(f.owner||'').replace(/"/g,'&quot;')}" data-deadline="${f.deadline||''}">
           <div class="modal-item-text">
             <div>${f.item || '—'}</div>
-            <div class="modal-item-meta">負責人：${f.owner || '—'}　完成日：${f.deadline || '—'}</div>
+            <div class="modal-item-meta">${t('carryoverOwner')}${f.owner || '—'}　${t('carryoverDeadline')}${f.deadline || '—'}</div>
           </div>
         </label>`;
       totalItems++;
@@ -1267,7 +1409,7 @@ function openCarryoverModal() {
   });
 
   if (!totalItems) {
-    html = '<div class="modal-empty">其他會議中沒有未完成的追蹤事項</div>';
+    html = `<div class="modal-empty">${t('noCarryover')}</div>`;
   }
 
   body.innerHTML = html;
@@ -1307,7 +1449,7 @@ function confirmCarryover() {
       <td><textarea class="item-input" oninput="autoResize(this)" rows="1">${cb.dataset.item || ''}</textarea></td>
       <td><input type="text" value="${cb.dataset.owner || ''}"></td>
       <td><input type="date" value="${cb.dataset.deadline || ''}"></td>
-      <td class="status-cell"><span class="status-badge status-pending" onclick="toggleStatus(this)">進行中</span></td>
+      <td class="status-cell"><span class="status-badge status-pending" onclick="toggleStatus(this)">${t('inProgress')}</span></td>
       <td style="text-align:center"><span class="carryover-tag" title="來自 ${carryFrom.date}" onclick="loadMeeting('${carryFrom.id}')">↩ ${carryFrom.date}</span></td>
       <td class="del-row" onclick="this.closest('tr').remove()">✕</td>
     `;
@@ -1323,7 +1465,7 @@ function confirmCarryover() {
 
   localStorage.setItem('m31_meetings', JSON.stringify(meetings));
   closeCarryoverModal();
-  showToast(`✓ 已帶入 ${checked.length} 筆追蹤事項`);
+  showToast(t('toastCarryover', checked.length));
 }
 
 // ── Filter ──
@@ -1336,7 +1478,7 @@ function toggleFilter() {
   const btn = document.getElementById('toggleFilterBtn');
   panel.classList.toggle('open', filterOpen);
   btn.classList.toggle('on', filterOpen);
-  btn.textContent = filterOpen ? '✕ 關閉篩選' : '🔍 跨會議篩選';
+  btn.textContent = filterOpen ? t('closeCrossFilter') : t('crossFilter');
   if (filterOpen) applyFilter(currentFilter);
 }
 
@@ -1373,34 +1515,44 @@ function applyFilter(status) {
   const count = document.getElementById('filterCount');
   const container = document.getElementById('filterResults');
 
-  const statusLabel = { all: '全部', pending: '進行中', done: '已完成', overdue: '逾期' };
-  count.textContent = `共找到 ${results.length} 筆「${statusLabel[status]}」追蹤事項`;
+  const statusLabel = t('filterLabels');
+  count.textContent = t('filterCount', results.length, statusLabel[status] || status);
 
   if (!results.length) {
-    container.innerHTML = `<div class="filter-empty">沒有符合條件的追蹤事項</div>`;
+    container.innerHTML = `<div class="filter-empty">${t('filterEmpty')}</div>`;
     return;
   }
 
-  const statusMap = { pending: ['status-pending', '進行中'], done: ['status-done', '已完成'], overdue: ['status-overdue', '逾期'] };
+  const statusMap = {
+    pending: ['status-pending', t('inProgress')],
+    done:    ['status-done',    t('done')],
+    overdue: ['status-overdue', t('overdue')]
+  };
+
+  const typeDisplayMap = {
+    '部門週會': t('typeWeekly'), '部門月會': t('typeMonthly'),
+    '專案': t('project'), 'KPI': 'KPI', '系統': t('system'), '其他': t('other')
+  };
 
   container.innerHTML = `
     <table class="filter-result-table">
       <thead>
         <tr>
-          <th style="width:110px">會議日期</th>
-          <th style="width:90px">會議類型</th>
-          <th>追蹤事項</th>
-          <th style="width:90px">負責人</th>
-          <th style="width:100px">完成日</th>
-          <th style="width:80px">狀態</th>
+          <th style="width:110px">${t('filterMeetingDate')}</th>
+          <th style="width:90px">${t('filterMeetingType')}</th>
+          <th>${t('filterItem')}</th>
+          <th style="width:90px">${t('filterOwner')}</th>
+          <th style="width:100px">${t('filterDeadline')}</th>
+          <th style="width:80px">${t('filterStatusCol')}</th>
         </tr>
       </thead>
       <tbody>
         ${results.map(r => {
-          const [cls, lbl] = statusMap[r.status] || ['status-pending', '進行中'];
+          const [cls, lbl] = statusMap[r.status] || ['status-pending', t('inProgress')];
+          const typeLabel = typeDisplayMap[r.meetingType] || r.meetingType;
           return `<tr>
             <td><span class="filter-date-link" onclick="loadMeeting('${r.meetingId}')">${r.meetingDate}</span></td>
-            <td style="font-size: 12px; color:var(--muted)">${r.meetingType}</td>
+            <td style="font-size: 12px; color:var(--muted)">${typeLabel}</td>
             <td>${r.item || '—'}</td>
             <td>${r.owner || '—'}</td>
             <td style="font-size:12px">${r.deadline || '—'}</td>
@@ -1422,7 +1574,535 @@ function printPage() {
   window.print();
 }
 
-// ── Toast ──
+// ── Email & PDF ──
+let contacts = JSON.parse(localStorage.getItem('m31_contacts') || '[]');
+
+function openEmailModal() {
+  const m = meetings.find(x => x.id === currentId);
+  const date = document.getElementById('meetingDate').value || '';
+  const type = document.getElementById('meetingType').value || '';
+  const time = document.getElementById('meetingTime').value || '';
+
+  // Pre-fill subject
+  document.getElementById('emailSubject').value = t('emailSubjectTemplate', type, date);
+
+  // Pre-fill body
+  const followupLines = [];
+  document.querySelectorAll('#followupBody tr').forEach((tr, i) => {
+    const cells = tr.querySelectorAll('td');
+    const item = cells[1]?.querySelector('textarea')?.value || '';
+    if (!item.trim()) return;
+    const owner = cells[2]?.querySelector('input')?.value || '—';
+    const deadline = cells[3]?.querySelector('input')?.value || '—';
+    const statusEl = cells[4]?.querySelector('.status-badge');
+    const status = statusEl?.textContent || '—';
+    followupLines.push(t('emailFollowupLine', String(i+1).padStart(2,'0'), item, owner, deadline, status));
+  });
+
+  const body = t('emailBodyTemplate', date, type, time, followupLines, document.getElementById('recorder').value || '—');
+
+  document.getElementById('emailBody').value = body;
+
+  // Render contact chips
+  renderContactChips();
+  document.getElementById('emailModal').classList.add('open');
+}
+
+function renderContactChips() {
+  const container = document.getElementById('contactChips');
+  if (!contacts.length) {
+    container.innerHTML = `<span style="font-size:12px; color:var(--muted)">${t('noContacts')}</span>`;
+    return;
+  }
+  container.innerHTML = contacts.map((c, i) => `
+    <div class="contact-chip" id="chip_${i}" onclick="toggleChip(${i})">
+      <span class="chip-name">${c.name}</span>
+      <span class="chip-email">&lt;${c.email}&gt;</span>
+    </div>
+  `).join('');
+}
+
+function toggleChip(i) {
+  const chip = document.getElementById(`chip_${i}`);
+  chip.classList.toggle('selected');
+  // Sync to emailTo field
+  const selected = contacts.filter((_, idx) => document.getElementById(`chip_${idx}`)?.classList.contains('selected'));
+  const existing = document.getElementById('emailTo').value.trim();
+  // Rebuild: keep manually typed ones (not matching any contact email), then add selected
+  const contactEmails = contacts.map(c => c.email.toLowerCase());
+  const manual = existing ? existing.split(';').map(e => e.trim()).filter(e => e && !contactEmails.includes(e.toLowerCase())) : [];
+  const all = [...manual, ...selected.map(c => c.email)];
+  document.getElementById('emailTo').value = all.join('; ');
+}
+
+function closeEmailModal() {
+  document.getElementById('emailModal').classList.remove('open');
+}
+
+// ── Email & PDF ──
+function sendEmail() {
+  const to = document.getElementById('emailTo').value.trim();
+  const cc = document.getElementById('emailCc').value.trim();
+  const subject = document.getElementById('emailSubject').value.trim();
+  const body = document.getElementById('emailBody').value.trim();
+
+  if (!to) { showToast(t('toastNoRecipient')); return; }
+
+  const date = document.getElementById('meetingDate').value || 'meeting';
+  const type = document.getElementById('meetingType').value || '';
+  const pdfFilename = t('pdfFilename', type, date);
+
+  showToast(t('toastGenerating'));
+
+  const container = document.createElement('div');
+  container.innerHTML = buildPdfHtml();
+  container.style.position = 'absolute';
+  container.style.left = '-9999px';
+  document.body.appendChild(container);
+
+  const opt = {
+    margin: [10, 10, 10, 10],
+    filename: pdfFilename,
+    image: { type: 'jpeg', quality: 0.98 },
+    html2canvas: { scale: 2, useCORS: true },
+    jsPDF: { unit: 'mm', format: 'a4', orientation: 'landscape' }
+  };
+
+  html2pdf().set(opt).from(container).outputPdf('blob').then(blob => {
+    document.body.removeChild(container);
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      const base64 = reader.result.split(',')[1];
+      fetch('http://localhost:3000/send-email', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ to, cc, subject, body, pdfBase64: base64, pdfFilename })
+      })
+      .then(r => r.json())
+      .then(data => {
+        if (data.success) {
+          showToast(t('toastSent'));
+          closeEmailModal();
+        } else {
+          showToast(t('toastSendFail', data.message));
+        }
+      })
+      .catch(() => {
+        showToast(t('toastNoServer'));
+      });
+    };
+    reader.readAsDataURL(blob);
+  });
+}
+
+function buildPdfHtml() {
+  const date = document.getElementById('meetingDate').value || '';
+  const type = document.getElementById('meetingType').value || '';
+  const meetingTime = document.getElementById('meetingTime').value || '';
+  const recorder = document.getElementById('recorder').value || '';
+  const discussion = document.getElementById('discussion').value || '';
+
+  const followupRows = [];
+  document.querySelectorAll('#followupBody tr').forEach((tr, i) => {
+    const cells = tr.querySelectorAll('td');
+    const item = cells[1]?.querySelector('textarea')?.value || '';
+    if (!item.trim()) return;
+    const owner = cells[2]?.querySelector('input')?.value || '';
+    const deadline = cells[3]?.querySelector('input')?.value || '';
+    const statusEl = cells[4]?.querySelector('.status-badge');
+    const status = statusEl?.textContent || '';
+    const srcEl = cells[5]?.querySelector('.carryover-tag');
+    const src = srcEl ? srcEl.textContent.trim() : '—';
+    const statusColor = statusEl?.classList.contains('status-done') ? '#2e7d32' : statusEl?.classList.contains('status-overdue') ? '#c62828' : statusEl?.classList.contains('status-continued') ? '#4527a0' : '#856404';
+    followupRows.push(`
+      <tr>
+        <td style="text-align:center;background:#f0ead6;font-weight:700;color:#c9a84c;width:50px">${String(i+1).padStart(3,'0')}</td>
+        <td style="padding:7px 10px">${item}</td>
+        <td style="padding:7px 10px;text-align:center">${owner}</td>
+        <td style="padding:7px 10px;text-align:center">${deadline}</td>
+        <td style="padding:7px 10px;text-align:center"><span style="color:${statusColor};font-weight:600">${status}</span></td>
+        <td style="padding:7px 10px;text-align:center;font-size:11px;color:#1565c0">${src}</td>
+      </tr>`);
+  });
+
+  return `
+    <div style="font-family: Georgia, 'Times New Roman', serif; line-height: 1.7; letter-spacing: 0.03em;color:#1a1a2e;max-width:900px;margin:0 auto;padding:24px">
+      <div style="text-align:center;border-top:3px double #c9a84c;border-bottom:3px double #c9a84c;padding:16px 0;margin-bottom:24px">
+        <div style="font-size:22px;font-weight:700;letter-spacing:6px">${t('pdfTitle')}</div>
+        <div style="font-size:11px;color:#7a7267;letter-spacing:3px;margin-top:4px">${t('pdfSubtitle')}</div>
+      </div>
+      <table style="width:100%;border-collapse:collapse;border:1px solid #d4c9a8;margin-bottom:20px">
+        <tr>
+          <td style="background:#f0ead6;padding:9px 14px;font-weight:600;border:1px solid #d4c9a8;width:80px">${t('pdfMeetingType')}</td>
+          <td style="padding:9px 14px;border:1px solid #d4c9a8">${type}</td>
+          <td style="background:#f0ead6;padding:9px 14px;font-weight:600;border:1px solid #d4c9a8;width:80px">${t('pdfMeetingDate')}</td>
+          <td style="padding:9px 14px;border:1px solid #d4c9a8">${date}</td>
+        </tr>
+        <tr>
+          <td style="background:#f0ead6;padding:9px 14px;font-weight:600;border:1px solid #d4c9a8">${t('pdfMeetingTime')}</td>
+          <td colspan="3" style="padding:9px 14px;border:1px solid #d4c9a8">${meetingTime}</td>
+        </tr>
+        <tr>
+          <td style="background:#f0ead6;padding:9px 14px;font-weight:600;border:1px solid #d4c9a8">${t('pdfRecorder')}</td>
+          <td colspan="3" style="padding:9px 14px;border:1px solid #d4c9a8">${recorder}</td>
+        </tr>
+      </table>
+      <div style="border-left:4px solid #c9a84c;padding-left:10px;font-size:14px;font-weight:700;margin:20px 0 10px;letter-spacing:2px">${t('pdfDiscussion')}</div>
+      <div style="border:1px solid #d4c9a8;padding:14px;min-height:60px;white-space:pre-wrap;font-size:13px;line-height:1.8">${discussion}</div>
+      <div style="border-left:4px solid #c9a84c;padding-left:10px;font-size:14px;font-weight:700;margin:20px 0 10px;letter-spacing:2px">${t('pdfFollowup')}</div>
+      <table style="width:100%;border-collapse:collapse;border:1px solid #d4c9a8;font-size:13px">
+        <thead>
+          <tr style="background:#f0ead6">
+            <th style="padding:9px;border:1px solid #d4c9a8;width:50px">${t('pdfNo')}</th>
+            <th style="padding:9px;border:1px solid #d4c9a8;text-align:left">${t('pdfItem')}</th>
+            <th style="padding:9px;border:1px solid #d4c9a8;width:90px">${t('pdfOwner')}</th>
+            <th style="padding:9px;border:1px solid #d4c9a8;width:100px">${t('pdfDeadline')}</th>
+            <th style="padding:9px;border:1px solid #d4c9a8;width:80px">${t('pdfStatus')}</th>
+            <th style="padding:9px;border:1px solid #d4c9a8;width:80px">${t('pdfSource')}</th>
+          </tr>
+        </thead>
+        <tbody>${followupRows.join('') || `<tr><td colspan="6" style="text-align:center;padding:16px;color:#7a7267">${t('pdfNoFollowup')}</td></tr>`}</tbody>
+      </table>
+    </div>`;
+}
+
+function generatePDF() {
+  const date = document.getElementById('meetingDate').value || 'meeting';
+  const type = document.getElementById('meetingType').value || '';
+  const filename = t('pdfFilename', type, date);
+
+  const container = document.createElement('div');
+  container.innerHTML = buildPdfHtml();
+  container.style.position = 'absolute';
+  container.style.left = '-9999px';
+  document.body.appendChild(container);
+
+  const opt = {
+    margin: [10, 10, 10, 10],
+    filename,
+    image: { type: 'jpeg', quality: 0.98 },
+    html2canvas: { scale: 2, useCORS: true },
+    jsPDF: { unit: 'mm', format: 'a4', orientation: 'landscape' }
+  };
+
+  html2pdf().set(opt).from(container).save().then(() => {
+    document.body.removeChild(container);
+  });
+}
+
+// ── Contacts Manager ──
+function manageContacts() {
+  renderContactsManager();
+  document.getElementById('contactsModal').classList.add('open');
+}
+
+function closeContactsModal() {
+  document.getElementById('contactsModal').classList.remove('open');
+  renderContactChips();
+}
+
+function renderContactsManager() {
+  const body = document.getElementById('contactsManagerBody');
+  const rows = contacts.map((c, i) => `
+    <div style="display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid var(--border)">
+      <div style="flex:1">
+        <div style="font-weight:600;font-size:13px">${c.name}</div>
+        <div style="font-size:11px;color:var(--muted)">${c.email}</div>
+      </div>
+      <button class="btn btn-danger" style="padding:4px 10px;font-size:11px" onclick="removeContact(${i})">${t('deleteBtn')}</button>
+    </div>`).join('');
+
+  body.innerHTML = `
+    ${rows || '<div style="color:var(--muted);font-size:13px;padding:12px 0">尚無聯絡人</div>'}
+    <div style="margin-top:16px;padding-top:14px;border-top:1px solid var(--border)">
+      <div style="font-size:11px;font-weight:700;color:var(--gold);letter-spacing:1.5px;margin-bottom:8px">新增聯絡人</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <input id="newContactName" type="text" placeholder="${t('namePlaceholder')}" style="flex:1;min-width:100px;border:1px solid var(--border);border-radius:4px;padding:7px 10px;font-size:13px;outline:none">
+        <input id="newContactEmail" type="email" placeholder="${t('emailPlaceholder')}" style="flex:2;min-width:160px;border:1px solid var(--border);border-radius:4px;padding:7px 10px;font-size:13px;outline:none">
+        <button class="btn btn-primary" style="padding:7px 14px" onclick="addContact()">${t('addBtn')}</button>
+      </div>
+    </div>`;
+}
+
+function addContact() {
+  const name = document.getElementById('newContactName').value.trim();
+  const email = document.getElementById('newContactEmail').value.trim();
+  if (!name || !email) { showToast(t('toastNoName')); return; }
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { showToast(t('toastBadEmail')); return; }
+  contacts.push({ name, email });
+  localStorage.setItem('m31_contacts', JSON.stringify(contacts));
+  renderContactsManager();
+  showToast(t('toastContactAdded', name));
+}
+
+function removeContact(i) {
+  contacts.splice(i, 1);
+  localStorage.setItem('m31_contacts', JSON.stringify(contacts));
+  renderContactsManager();
+}
+
+// ── i18n Language Toggle ──
+var currentLang = localStorage.getItem('m31_lang') || 'zh';
+
+var ZH = {
+  pageTitle: 'M31財務部會議記錄系統', sidebarSub: '會議記錄管理系統', langBtn: 'EN',
+  newMeeting: '新增會議記錄', history: '歷史記錄', searchPlaceholder: '🔍 搜尋追蹤事項或負責人…',
+  noHistory: '尚無歷史記錄', noHistorySmall: '儲存後即顯示於此', noMatch: '無符合條件的記錄',
+  all: '全部', weekly: '週會', monthly: '月會', project: '專案', system: '系統', other: '其他',
+  docSubtitle: 'MEETING MINUTES · FINANCE DEPARTMENT',
+  meetingType: '會議主題', meetingDate: '會議日期', startTime: '開始時間',
+  duration: '會議長度', meetingTime: '會議時間', recorder: '記錄人',
+  selectPlaceholder: '請選擇…',
+  d30: '30 分鐘', d60: '1 小時', d90: '1.5 小時', d120: '2 小時', d150: '2.5 小時', d180: '3 小時',
+  typeWeekly: '部門週會', typeMonthly: '部門月會',
+  followupFilter: '追蹤事項篩選', crossFilter: '🔍 跨會議篩選', closeCrossFilter: '✕ 關閉篩選',
+  filterStatusLabel: '篩選狀態：',
+  inProgress: '進行中', done: '已完成', overdue: '逾期', continued: '已延續',
+  discussion: '會議討論內容', discussionPlaceholder: '請輸入本次會議討論事項、決議、備註…',
+  followupItems: '追蹤事項', no: '編號', followupItem: '追蹤事項',
+  owner: '負責人', deadline: '完成日', status: '狀態', source: '來源',
+  addItem: '新增追蹤事項',
+  save: '💾 儲存記錄', carryover: '↩ 延續追蹤', sendEmail: '📧 寄送記錄', print: '🖨 列印', deleteRecord: '🗑 刪除此記錄',
+  emailModalTitle: '📧 寄送會議記錄',
+  contactsLabel: '固定聯絡人（點選加入收件人）', toEmailLabel: '收件人 Email', ccLabel: '副本 CC',
+  subjectLabel: '主旨', bodyLabel: '信件內文',
+  emailHint: '💡 點擊「寄送」後系統會自動產生 PDF 並透過本機伺服器寄出。請先在終端機執行 <strong>node server.js</strong>。',
+  manageContacts: '⚙️ 管理聯絡人', sendBtn: '📧 寄送', cancel: '取消',
+  manageContactsTitle: '⚙️ 管理固定聯絡人',
+  noContacts: '尚無聯絡人，點「管理聯絡人」新增',
+  addContactTitle: '新增聯絡人', namePlaceholder: '姓名', emailPlaceholder: 'Email',
+  addBtn: '新增', deleteBtn: '刪除', close: '關閉',
+  carryoverTitle: '↩ 延續追蹤事項', confirmCarryover: '帶入選取事項',
+  noCarryover: '其他會議中沒有未完成的追蹤事項',
+  carryoverOwner: '負責人：', carryoverDeadline: '完成日：',
+  toastSaved: '✓ 會議記錄已儲存', toastDeleted: '記錄已刪除',
+  toastNoRecipient: '請填寫收件人 Email', toastGenerating: '⏳ 產生 PDF 中，請稍候…',
+  toastSent: '✅ 郵件已成功寄出！', toastNoServer: '❌ 無法連線伺服器，請在終端機執行 node server.js',
+  toastNoName: '請填寫姓名與 Email', toastBadEmail: 'Email 格式不正確',
+  confirmDelete: '確定刪除此會議記錄？',
+  validDate: '請填寫會議日期', validType: '請選擇會議主題',
+  filterLabels: { all: '全部', pending: '進行中', done: '已完成', overdue: '逾期' },
+  filterMeetingDate: '會議日期', filterMeetingType: '會議類型', filterItem: '追蹤事項',
+  filterOwner: '負責人', filterDeadline: '完成日', filterStatusCol: '狀態',
+  pendingBadge: '待辦', allDone: '✓', filterEmpty: '沒有符合條件的追蹤事項',
+  pdfTitle: 'M31財務部會議記錄', pdfSubtitle: 'MEETING MINUTES · FINANCE DEPARTMENT',
+  pdfMeetingType: '會議主題', pdfMeetingDate: '會議日期', pdfMeetingTime: '會議時間',
+  pdfRecorder: '記錄人', pdfDiscussion: '會議討論內容', pdfFollowup: '追蹤事項',
+  pdfNo: '編號', pdfItem: '追蹤事項', pdfOwner: '負責人',
+  pdfDeadline: '完成日', pdfStatus: '狀態', pdfSource: '來源', pdfNoFollowup: '無追蹤事項',
+  filterCount: function(n, lbl) { return '共找到 ' + n + ' 筆「' + lbl + '」追蹤事項'; },
+  toastCarryover: function(n) { return '✓ 已帶入 ' + n + ' 筆追蹤事項'; },
+  toastSendFail: function(msg) { return '❌ 發信失敗：' + msg; },
+  toastContactAdded: function(name) { return '✓ 已新增 ' + name; },
+  pdfFilename: function(type, date) { return 'M31財務部_' + type + '_' + date + '.pdf'; },
+  emailSubjectTemplate: function(type, date) { return '【M31財務部】' + type + ' 會議記錄 ' + date; },
+  emailFollowupLine: function(i, item, owner, deadline, status) { return '  ' + i + '. ' + item + '（負責：' + owner + '，完成日：' + deadline + '，狀態：' + status + '）'; },
+  emailBodyTemplate: function(date, type, time, lines, recorder) {
+    var nl = '\n';
+    return '各位好，' + nl + nl +
+      '附件為 ' + date + ' ' + type + '（' + time + '）會議記錄，請查收。' + nl + nl +
+      '【追蹤事項摘要】' + nl +
+      (lines.length ? lines.join(nl) : '  無追蹤事項') + nl + nl +
+      '如有任何問題，請回覆此郵件。' + nl + nl +
+      'M31財務部' + nl +
+      '記錄人：' + recorder;
+  },
+};
+
+var EN = {
+  pageTitle: 'M31 Finance Meeting Records', sidebarSub: 'Meeting Records System', langBtn: '中文',
+  newMeeting: 'New Meeting', history: 'History', searchPlaceholder: '🔍 Search action items or owners…',
+  noHistory: 'No records yet', noHistorySmall: 'Saved records appear here', noMatch: 'No matching records',
+  all: 'All', weekly: 'Weekly', monthly: 'Monthly', project: 'Project', system: 'System', other: 'Other',
+  docSubtitle: 'MEETING MINUTES · FINANCE DEPARTMENT',
+  meetingType: 'Meeting Type', meetingDate: 'Date', startTime: 'Start Time',
+  duration: 'Duration', meetingTime: 'Meeting Time', recorder: 'Recorded By',
+  selectPlaceholder: 'Select…',
+  d30: '30 min', d60: '1 hr', d90: '1.5 hr', d120: '2 hr', d150: '2.5 hr', d180: '3 hr',
+  typeWeekly: 'Dept. Weekly', typeMonthly: 'Dept. Monthly',
+  followupFilter: 'Action Item Filter', crossFilter: '🔍 Cross-Meeting Filter', closeCrossFilter: '✕ Close Filter',
+  filterStatusLabel: 'Status: ',
+  inProgress: 'In Progress', done: 'Done', overdue: 'Overdue', continued: 'Continued',
+  discussion: 'Discussion Notes', discussionPlaceholder: 'Enter discussion points, decisions, remarks…',
+  followupItems: 'Action Items', no: 'No.', followupItem: 'Action Item',
+  owner: 'Owner', deadline: 'Due Date', status: 'Status', source: 'Source',
+  addItem: 'Add Action Item',
+  save: '💾 Save', carryover: '↩ Carry Over', sendEmail: '📧 Send Minutes', print: '🖨 Print', deleteRecord: '🗑 Delete',
+  emailModalTitle: '📧 Send Meeting Minutes',
+  contactsLabel: 'Saved Contacts (click to add)', toEmailLabel: 'To', ccLabel: 'CC',
+  subjectLabel: 'Subject', bodyLabel: 'Message Body',
+  emailHint: '💡 Click "Send" to generate a PDF and send via local server. Make sure <strong>node server.js</strong> is running.',
+  manageContacts: '⚙️ Manage Contacts', sendBtn: '📧 Send', cancel: 'Cancel',
+  manageContactsTitle: '⚙️ Manage Contacts',
+  noContacts: 'No contacts yet. Click "Manage Contacts" to add.',
+  addContactTitle: 'Add Contact', namePlaceholder: 'Name', emailPlaceholder: 'Email',
+  addBtn: 'Add', deleteBtn: 'Delete', close: 'Close',
+  carryoverTitle: '↩ Carry Over Action Items', confirmCarryover: 'Import Selected',
+  noCarryover: 'No incomplete action items in other meetings',
+  carryoverOwner: 'Owner: ', carryoverDeadline: 'Due: ',
+  toastSaved: '✓ Meeting saved', toastDeleted: 'Record deleted',
+  toastNoRecipient: 'Please enter recipient email', toastGenerating: '⏳ Generating PDF…',
+  toastSent: '✅ Email sent!', toastNoServer: '❌ Cannot connect. Run node server.js first.',
+  toastNoName: 'Please enter name and email', toastBadEmail: 'Invalid email format',
+  confirmDelete: 'Delete this meeting record?',
+  validDate: 'Please enter meeting date', validType: 'Please select meeting type',
+  filterLabels: { all: 'All', pending: 'In Progress', done: 'Done', overdue: 'Overdue' },
+  filterMeetingDate: 'Date', filterMeetingType: 'Type', filterItem: 'Action Item',
+  filterOwner: 'Owner', filterDeadline: 'Due Date', filterStatusCol: 'Status',
+  pendingBadge: 'pending', allDone: '✓', filterEmpty: 'No matching action items',
+  pdfTitle: 'M31 Finance Dept. Meeting Minutes', pdfSubtitle: 'MEETING MINUTES · FINANCE DEPARTMENT',
+  pdfMeetingType: 'Meeting Type', pdfMeetingDate: 'Date', pdfMeetingTime: 'Time',
+  pdfRecorder: 'Recorded By', pdfDiscussion: 'Discussion Notes', pdfFollowup: 'Action Items',
+  pdfNo: 'No.', pdfItem: 'Action Item', pdfOwner: 'Owner',
+  pdfDeadline: 'Due Date', pdfStatus: 'Status', pdfSource: 'Source', pdfNoFollowup: 'No action items',
+  filterCount: function(n, lbl) { return 'Found ' + n + ' "' + lbl + '" item(s)'; },
+  toastCarryover: function(n) { return '✓ ' + n + ' item(s) carried over'; },
+  toastSendFail: function(msg) { return '❌ Send failed: ' + msg; },
+  toastContactAdded: function(name) { return '✓ Added ' + name; },
+  pdfFilename: function(type, date) { return 'M31_Finance_' + type + '_' + date + '.pdf'; },
+  emailSubjectTemplate: function(type, date) { return '[M31 Finance] ' + type + ' Meeting Minutes ' + date; },
+  emailFollowupLine: function(i, item, owner, deadline, status) { return '  ' + i + '. ' + item + ' (Owner: ' + owner + ', Due: ' + deadline + ', Status: ' + status + ')'; },
+  emailBodyTemplate: function(date, type, time, lines, recorder) {
+    var nl = '\n';
+    return 'Hi all,' + nl + nl +
+      'Please find the meeting minutes for ' + type + ' on ' + date + ' (' + time + ') attached.' + nl + nl +
+      '[Action Items Summary]' + nl +
+      (lines.length ? lines.join(nl) : '  No action items') + nl + nl +
+      'Please reply if you have any questions.' + nl + nl +
+      'M31 Finance Dept.' + nl +
+      'Recorded by: ' + recorder;
+  },
+};
+
+function LD() { return currentLang === 'en' ? EN : ZH; }
+
+function t(key) {
+  var d = LD(), val = d[key];
+  if (val === undefined) return key;
+  if (typeof val === 'function') { return val.apply(null, Array.prototype.slice.call(arguments, 1)); }
+  return val;
+}
+
+function toggleLang() {
+  currentLang = currentLang === 'zh' ? 'en' : 'zh';
+  localStorage.setItem('m31_lang', currentLang);
+  applyLang();
+}
+
+function applyLang() {
+  try {
+    var d = LD();
+    var $ = function(id) { return document.getElementById(id); };
+    var setText = function(el, v) { if (el && v !== undefined) el.textContent = v; };
+    var setHTML = function(el, v) { if (el && v !== undefined) el.innerHTML = v; };
+
+    document.title = d.pageTitle;
+    setText($('langToggleBtn'), d.langBtn);
+    setText($('i18n-sidebar-sub'), d.sidebarSub);
+
+    var zhT = document.querySelector('.doc-title');
+    var enT = $('i18n-doc-title');
+    if (zhT) zhT.style.display = currentLang === 'en' ? 'none' : '';
+    if (enT) enT.style.display = currentLang === 'en' ? 'block' : 'none';
+    setText($('i18n-doc-subtitle'), d.docSubtitle);
+
+    setText(document.querySelector('.new-btn'), '＋ ' + d.newMeeting);
+    setText(document.querySelector('.sidebar-section'), d.history);
+    var hs = $('historySearch'); if (hs) hs.placeholder = d.searchPlaceholder;
+    var disc = $('discussion'); if (disc) disc.placeholder = d.discussionPlaceholder;
+
+    var cellLabels = document.querySelectorAll('.cell-label');
+    var labelKeys = ['meetingType','meetingDate','startTime','duration','meetingTime','recorder'];
+    cellLabels.forEach(function(el, i) { if (d[labelKeys[i]]) el.textContent = d[labelKeys[i]]; });
+
+    var typeSelect = $('meetingType');
+    if (typeSelect) {
+      var typeMap = {'':'', '部門週會':d.typeWeekly,'部門月會':d.typeMonthly,'專案':d.project,'KPI':'KPI','系統':d.system,'其他':d.other};
+      Array.from(typeSelect.options).forEach(function(o) {
+        if (o.value === '') o.textContent = d.selectPlaceholder;
+        else if (typeMap[o.value]) o.textContent = typeMap[o.value];
+      });
+    }
+
+    var durSelect = $('meetingDuration');
+    if (durSelect) {
+      var durMap = {'30':d.d30,'60':d.d60,'90':d.d90,'120':d.d120,'150':d.d150,'180':d.d180};
+      Array.from(durSelect.options).forEach(function(o) { if (durMap[o.value]) o.textContent = durMap[o.value]; });
+    }
+
+    var hfMap = {all:d.all,'週會':d.weekly,'月會':d.monthly,'專案':d.project,'KPI':'KPI','系統':d.system,'其他':d.other};
+    document.querySelectorAll('.sf-btn').forEach(function(b) { var hf=b.getAttribute('data-hf'); if(hfMap[hf]!==undefined) b.textContent=hfMap[hf]; });
+
+    var ftBtn = $('toggleFilterBtn'); if(ftBtn) ftBtn.textContent = filterOpen ? d.closeCrossFilter : d.crossFilter;
+
+    var fsSpan = document.querySelector('.filter-controls span'); if(fsSpan) fsSpan.textContent = d.filterStatusLabel;
+    var fbMap = {all:d.all,pending:d.inProgress,done:d.done,overdue:d.overdue};
+    document.querySelectorAll('.filter-btn').forEach(function(b) { var s=b.getAttribute('data-status'); if(fbMap[s]!==undefined) b.textContent=fbMap[s]; });
+
+    var st = document.querySelectorAll('.section-title');
+    st.forEach(function(el) {
+      if (el.style.margin === '0px' || el.style.margin === '0') setText(el, d.followupFilter);
+      else if (el.getAttribute('data-i18n') === 'followupItems') setText(el, d.followupItems);
+      else setText(el, d.discussion);
+    });
+
+    var ths = document.querySelectorAll('#followupTable thead th');
+    var thKeys = ['no','followupItem','owner','deadline','status','source'];
+    ths.forEach(function(th, i) { if (d[thKeys[i]]) th.textContent = d[thKeys[i]]; });
+
+    setText(document.querySelector('.add-row-btn'), '＋ ' + d.addItem);
+
+    document.querySelectorAll('.btn-bar .btn').forEach(function(btn) {
+      var oc = btn.getAttribute('onclick') || '';
+      if (oc.indexOf('saveMeeting') !== -1) btn.textContent = d.save;
+      else if (oc.indexOf('openCarryoverModal') !== -1) btn.textContent = d.carryover;
+      else if (oc.indexOf('openEmailModal') !== -1) btn.textContent = d.sendEmail;
+      else if (oc.indexOf('printPage') !== -1) btn.textContent = d.print;
+      else if (oc.indexOf('deleteCurrentMeeting') !== -1) btn.textContent = d.deleteRecord;
+    });
+
+    setText(document.querySelector('#emailModal .modal-title'), d.emailModalTitle);
+    var eLabels = document.querySelectorAll('#emailModal label');
+    var eLabelKeys = ['contactsLabel','toEmailLabel','ccLabel','subjectLabel','bodyLabel'];
+    eLabels.forEach(function(el, i) { if (eLabelKeys[i] && d[eLabelKeys[i]]) el.textContent = d[eLabelKeys[i]]; });
+    var hint = document.querySelector('.email-hint'); if (hint) hint.innerHTML = d.emailHint;
+    var eBtns = document.querySelectorAll('#emailModal .btn');
+    eBtns.forEach(function(btn) {
+      var oc = btn.getAttribute('onclick') || '';
+      if (oc.indexOf('manageContacts') !== -1) btn.textContent = d.manageContacts;
+      else if (oc.indexOf('sendEmail') !== -1) btn.textContent = d.sendBtn;
+      else if (oc.indexOf('closeEmailModal') !== -1) btn.textContent = d.cancel;
+    });
+
+    setText(document.querySelector('#carryoverModal .modal-title'), d.carryoverTitle);
+    document.querySelectorAll('#carryoverModal .btn').forEach(function(btn) {
+      var oc = btn.getAttribute('onclick') || '';
+      if (oc.indexOf('confirmCarryover') !== -1) btn.textContent = d.confirmCarryover;
+      else if (oc.indexOf('closeCarryoverModal') !== -1) btn.textContent = d.cancel;
+    });
+
+    setText(document.querySelector('#contactsModal .modal-title'), d.manageContactsTitle);
+    document.querySelectorAll('#contactsModal .btn').forEach(function(btn) {
+      var oc = btn.getAttribute('onclick') || '';
+      if (oc.indexOf('closeContactsModal') !== -1) btn.textContent = d.close;
+    });
+
+    document.querySelectorAll('.status-badge').forEach(function(b) {
+      if (b.classList.contains('status-pending')) b.textContent = d.inProgress;
+      else if (b.classList.contains('status-done')) b.textContent = d.done;
+      else if (b.classList.contains('status-overdue')) b.textContent = d.overdue;
+      else if (b.classList.contains('status-continued')) b.textContent = d.continued;
+    });
+
+    renderHistory();
+    if (filterOpen) applyFilter(currentFilter);
+
+  } catch(err) { console.error('applyLang error:', err); }
+}
+
+window.addEventListener('load', function() { if (currentLang === 'en') applyLang(); });
+
+
 function showToast(msg) {
   const t = document.getElementById('toast');
   t.textContent = msg;
