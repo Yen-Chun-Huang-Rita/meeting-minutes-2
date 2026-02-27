@@ -5,6 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>M31財務部會議記錄系統</title>
 
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.13/flatpickr.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.13/flatpickr.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.13/l10n/zh-tw.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <style>
   :root {
@@ -1170,6 +1173,26 @@ function renderHistory() {
   }).join('');
 }
 
+function initDeadlinePicker(el) {
+  var locale = currentLang === 'en' ? 'en' : flatpickr.l10ns.zh_tw;
+  flatpickr(el, {
+    dateFormat: 'Y-m-d',
+    locale: locale,
+    disableMobile: true,
+    allowInput: false,
+    onReady: function(_, __, fp) {
+      fp.calendarContainer && fp.calendarContainer.classList.add('deadline-cal');
+    }
+  });
+}
+
+function reInitAllPickers() {
+  document.querySelectorAll('.deadline-input').forEach(function(el) {
+    if (el._flatpickr) el._flatpickr.destroy();
+    initDeadlinePicker(el);
+  });
+}
+
 function countPending(m) {
   const pending = (m.followups || []).filter(f => f.status !== 'done').length;
   return pending ? `${pending} ${t('pending')}` : '✓';
@@ -1202,13 +1225,13 @@ function addRow(carryFrom) {
   const tr = document.createElement('tr');
   tr.id = `row_${rowCount}`;
   const sourceHtml = carryFrom
-    ? `<td style="text-align:center"><span class="carryover-tag" title="來自 ${carryFrom.date}" onclick="loadMeeting('${carryFrom.id}')">↩ ${carryFrom.date}</span></td>`
+    ? `<td style="text-align:center"><span class="carryover-tag" title="${t('carryoverFrom')} ${carryFrom.date}" onclick="loadMeeting('${carryFrom.id}')">↩ ${carryFrom.date}</span></td>`
     : `<td style="text-align:center; color:#ccc; font-size:11px">—</td>`;
   tr.innerHTML = `
     <td class="num">${num}</td>
-    <td><textarea class="item-input" placeholder="描述追蹤事項…" oninput="autoResize(this)" rows="1"></textarea></td>
-    <td><input type="text" placeholder="姓名"></td>
-    <td><input type="date"></td>
+    <td><textarea class="item-input" placeholder="${t('itemPlaceholder')}" oninput="autoResize(this)" rows="1"></textarea></td>
+    <td><input type="text" placeholder="${t('ownerPlaceholder')}"></td>
+    <td><input type="text" class="deadline-input" placeholder="${t('deadlinePlaceholder')}" readonly style="cursor:pointer"></td>
     <td class="status-cell">
       <span class="status-badge status-pending" onclick="toggleStatus(this)">${t('inProgress')}</span>
     </td>
@@ -1216,6 +1239,7 @@ function addRow(carryFrom) {
     <td class="del-row" onclick="this.closest('tr').remove()">✕</td>
   `;
   document.getElementById('followupBody').appendChild(tr);
+  initDeadlinePicker(tr.querySelector('.deadline-input'));
 }
 
 function toggleStatus(el) {
@@ -1342,18 +1366,19 @@ function loadMeeting(id) {
     else if (f.status === 'overdue') { cls = 'status-overdue'; label = t('overdue'); }
     else if (f.status === 'continued') { cls = 'status-continued'; label = t('continued'); }
     const sourceHtml = f.carryFrom
-      ? `<td style="text-align:center"><span class="carryover-tag" title="來自 ${f.carryFrom.date}" onclick="loadMeeting('${f.carryFrom.id}')">↩ ${f.carryFrom.date}</span></td>`
+      ? `<td style="text-align:center"><span class="carryover-tag" title="${t('carryoverFrom')} ${f.carryFrom.date}" onclick="loadMeeting('${f.carryFrom.id}')">↩ ${f.carryFrom.date}</span></td>`
       : `<td style="text-align:center; color:#ccc; font-size:11px">—</td>`;
     tr.innerHTML = `
       <td class="num">${f.num}</td>
       <td><textarea class="item-input" oninput="autoResize(this)" rows="1">${f.item || ''}</textarea></td>
       <td><input type="text" value="${f.owner || ''}"></td>
-      <td><input type="date" value="${f.deadline || ''}"></td>
+      <td><input type="text" class="deadline-input" value="${f.deadline || ''}" placeholder="${t('deadlinePlaceholder')}" readonly style="cursor:pointer"></td>
       <td class="status-cell"><span class="status-badge ${cls}" onclick="toggleStatus(this)">${label}</span></td>
       ${sourceHtml}
       <td class="del-row" onclick="this.closest('tr').remove()">✕</td>
     `;
     document.getElementById('followupBody').appendChild(tr);
+    initDeadlinePicker(tr.querySelector('.deadline-input'));
   });
 
   enableEdit();
@@ -1448,12 +1473,13 @@ function confirmCarryover() {
       <td class="num">${num}</td>
       <td><textarea class="item-input" oninput="autoResize(this)" rows="1">${cb.dataset.item || ''}</textarea></td>
       <td><input type="text" value="${cb.dataset.owner || ''}"></td>
-      <td><input type="date" value="${cb.dataset.deadline || ''}"></td>
+      <td><input type="text" class="deadline-input" value="${cb.dataset.deadline || ''}" placeholder="${t('deadlinePlaceholder')}" readonly style="cursor:pointer"></td>
       <td class="status-cell"><span class="status-badge status-pending" onclick="toggleStatus(this)">${t('inProgress')}</span></td>
-      <td style="text-align:center"><span class="carryover-tag" title="來自 ${carryFrom.date}" onclick="loadMeeting('${carryFrom.id}')">↩ ${carryFrom.date}</span></td>
+      <td style="text-align:center"><span class="carryover-tag" title="${t('carryoverFrom')} ${carryFrom.date}" onclick="loadMeeting('${carryFrom.id}')">↩ ${carryFrom.date}</span></td>
       <td class="del-row" onclick="this.closest('tr').remove()">✕</td>
     `;
     tbody.appendChild(tr);
+    initDeadlinePicker(tr.querySelector('.deadline-input'));
 
     // Mark source item as continued
     const srcMeeting = meetings.find(m => m.id === cb.dataset.srcId);
@@ -1862,6 +1888,9 @@ var ZH = {
   followupItems: '追蹤事項', no: '編號', followupItem: '追蹤事項',
   owner: '負責人', deadline: '完成日', status: '狀態', source: '來源',
   addItem: '新增追蹤事項',
+  itemPlaceholder: '描述追蹤事項…',
+  deadlinePlaceholder: 'YYYY-MM-DD',
+  ownerPlaceholder: '負責人姓名',
   save: '💾 儲存記錄', carryover: '↩ 延續追蹤', sendEmail: '📧 寄送記錄', print: '🖨 列印', deleteRecord: '🗑 刪除此記錄',
   emailModalTitle: '📧 寄送會議記錄',
   contactsLabel: '固定聯絡人（點選加入收件人）', toEmailLabel: '收件人 Email', ccLabel: '副本 CC',
@@ -1874,7 +1903,7 @@ var ZH = {
   addBtn: '新增', deleteBtn: '刪除', close: '關閉',
   carryoverTitle: '↩ 延續追蹤事項', confirmCarryover: '帶入選取事項',
   noCarryover: '其他會議中沒有未完成的追蹤事項',
-  carryoverOwner: '負責人：', carryoverDeadline: '完成日：',
+  carryoverOwner: '負責人：', carryoverDeadline: '完成日：', carryoverFrom: '來自',
   toastSaved: '✓ 會議記錄已儲存', toastDeleted: '記錄已刪除',
   toastNoRecipient: '請填寫收件人 Email', toastGenerating: '⏳ 產生 PDF 中，請稍候…',
   toastSent: '✅ 郵件已成功寄出！', toastNoServer: '❌ 無法連線伺服器，請在終端機執行 node server.js',
@@ -1927,6 +1956,9 @@ var EN = {
   followupItems: 'Action Items', no: 'No.', followupItem: 'Action Item',
   owner: 'Owner', deadline: 'Due Date', status: 'Status', source: 'Source',
   addItem: 'Add Action Item',
+  itemPlaceholder: 'Describe action item…',
+  deadlinePlaceholder: 'YYYY-MM-DD',
+  ownerPlaceholder: 'Owner name',
   save: '💾 Save', carryover: '↩ Carry Over', sendEmail: '📧 Send Minutes', print: '🖨 Print', deleteRecord: '🗑 Delete',
   emailModalTitle: '📧 Send Meeting Minutes',
   contactsLabel: 'Saved Contacts (click to add)', toEmailLabel: 'To', ccLabel: 'CC',
@@ -1939,7 +1971,7 @@ var EN = {
   addBtn: 'Add', deleteBtn: 'Delete', close: 'Close',
   carryoverTitle: '↩ Carry Over Action Items', confirmCarryover: 'Import Selected',
   noCarryover: 'No incomplete action items in other meetings',
-  carryoverOwner: 'Owner: ', carryoverDeadline: 'Due: ',
+  carryoverOwner: 'Owner: ', carryoverDeadline: 'Due: ', carryoverFrom: 'From',
   toastSaved: '✓ Meeting saved', toastDeleted: 'Record deleted',
   toastNoRecipient: 'Please enter recipient email', toastGenerating: '⏳ Generating PDF…',
   toastSent: '✅ Email sent!', toastNoServer: '❌ Cannot connect. Run node server.js first.',
@@ -2096,6 +2128,22 @@ function applyLang() {
 
     renderHistory();
     if (filterOpen) applyFilter(currentFilter);
+
+    reInitAllPickers();
+
+    // Update existing row placeholders
+    document.querySelectorAll('textarea.item-input').forEach(function(el) {
+      el.placeholder = d.itemPlaceholder;
+    });
+
+    document.querySelectorAll('#followupBody td input[type="text"]:not(.deadline-input)').forEach(function(el) {
+      el.placeholder = d.ownerPlaceholder;
+    });
+    // Email modal placeholders
+    var emailTo = document.getElementById('emailTo');
+    if (emailTo) emailTo.placeholder = d.emailToPlaceholder;
+    var emailCc = document.getElementById('emailCc');
+    if (emailCc) emailCc.placeholder = d.emailCcPlaceholder;
 
   } catch(err) { console.error('applyLang error:', err); }
 }
